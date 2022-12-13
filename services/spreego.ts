@@ -1,8 +1,7 @@
-export const setup = () => {
-  return {
-    name: "Scooba Diving",
-    type: "",
-    dateTime: "",
-    location: "",
-  };
-};
+import { LineService } from "./line";
+
+export namespace SpreeGOService {
+  export function start(reqBody: any): Promise<any> {
+    return LineService.init(reqBody);
+  }
+}
