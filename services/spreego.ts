@@ -1,5 +1,5 @@
-import { Message } from "@line/bot-sdk";
-import { LineService } from "./line";
+import { Message } from "@line/bot-sdk"
+import { LineService } from "./line"
 
 export namespace SpreeGOService {
   export function start(reqBody: any): Promise<any> {
@@ -44,8 +44,8 @@ export namespace SpreeGOService {
           ],
         },
       },
-    ];
-    return LineService.replyMessage(reqBody, messages);
+    ]
+    return LineService.replyMessage(reqBody, messages)
   }
 
   export function setup(reqBody: any): Promise<any> {
@@ -242,8 +242,8 @@ export namespace SpreeGOService {
           },
         },
       },
-    ];
-    return LineService.replyMessage(reqBody, messages);
+    ]
+    return LineService.replyMessage(reqBody, messages)
   }
 
   export function list(reqBody: any): Promise<any> {
@@ -613,8 +613,8 @@ export namespace SpreeGOService {
           ],
         },
       },
-    ];
-    return LineService.replyMessage(reqBody, messages);
+    ]
+    return LineService.replyMessage(reqBody, messages)
   }
 
   export function error(reqBody: any): Promise<any> {
@@ -628,7 +628,7 @@ export namespace SpreeGOService {
         packageId: "446",
         stickerId: "2008",
       },
-    ];
-    return LineService.replyMessage(reqBody, messages);
+    ]
+    return LineService.replyMessage(reqBody, messages)
   }
 }

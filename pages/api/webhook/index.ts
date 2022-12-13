@@ -1,53 +1,53 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { SpreeGOService } from "../../../services/spreego";
+import type { NextApiRequest, NextApiResponse } from "next"
+import { SpreeGOService } from "../../../services/spreego"
 
 type Data = {
-  name: string;
-  error?: string;
-};
+  name: string
+  error?: string
+}
 
 async function messageController(reqBody: any): Promise<any> {
-  const cmd = reqBody.events[0].message.text;
+  const cmd = reqBody.events[0].message.text
   switch (cmd.toLowerCase()) {
     case "spreego":
-      return SpreeGOService.start(reqBody);
+      return SpreeGOService.start(reqBody)
     case "#เปิดตี้":
     case "#mockเปิดตี้":
-      return SpreeGOService.setup(reqBody);
+      return SpreeGOService.setup(reqBody)
     case "#ดูตี้ทั้งหมด":
     case "#mockดูตี้ทั้งหมด":
-      return SpreeGOService.list(reqBody);
+      return SpreeGOService.list(reqBody)
     default:
-      return null;
+      return null
   }
 }
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>,
+  res: NextApiResponse<Data>
 ): Promise<void> {
-  const messageType = req.body.events[0].type;
+  const messageType = req.body.events[0].type
 
   try {
     switch (messageType) {
       case "message": {
-        await messageController(req.body);
-        break;
+        await messageController(req.body)
+        break
       }
       default: {
-        console.log(JSON.stringify(req.body, null, 1));
-        break;
+        console.log(JSON.stringify(req.body, null, 1))
+        break
       }
     }
 
-    res.status(200).json({ name: "Webhook" });
+    res.status(200).json({ name: "Webhook" })
   } catch (error: any) {
-    const errorCode = error.statusCode || 500;
-    const errorMessage = error.message || error.statusMessage;
+    const errorCode = error.statusCode || 500
+    const errorMessage = error.message || error.statusMessage
 
-    console.log(errorMessage);
-    await SpreeGOService.error(req.body);
+    console.log(errorMessage)
+    await SpreeGOService.error(req.body)
 
-    res.status(errorCode).json({ name: "Webhook", error: errorMessage });
+    res.status(errorCode).json({ name: "Webhook", error: errorMessage })
   }
 }

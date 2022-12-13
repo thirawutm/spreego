@@ -1,63 +1,71 @@
-import clientPromise from "../../../lib/mongodb";
+import clientPromise from "../../../lib/mongodb"
 
-import type { NextApiRequest, NextApiResponse, } from 'next'
-import Constants from "../../../constants";
-import { Document, ObjectId } from "mongodb";
+import type { NextApiRequest, NextApiResponse } from "next"
+import Constants from "../../../constants"
+import { Document, ObjectId } from "mongodb"
 
 const COLLECTION_NAME = "events"
 
-const joinEvent = async (req: NextApiRequest,
-    res: NextApiResponse, collection: Document) => {
+const joinEvent = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  collection: Document
+) => {
+  const {
+    id,
+    user: { id: userId, joinType, moreGuest },
+  } = req.body
 
-    const { id, user: {id: userId, joinType, moreGuest }} = req.body
+  // const {name, dueDate, detail, location: { link, text, latitude, longitude }, members: { going, maybe, invite },  } = req.body
+  const event = await collection.findOne({ _id: new ObjectId(id) })
 
-        // const {name, dueDate, detail, location: { link, text, latitude, longitude }, members: { going, maybe, invite },  } = req.body
-    const event = await collection.findOne({ _id: new ObjectId(id)})
+  if (!event)
+    res.status(404).json({ status: false, message: "Event is not found" })
 
-    if(!event) res.status(404).json({status: false, message: "Event is not found" })
+  const { members = [] } = event
 
-    const { members=[] } = event
+  const findUser = members.find((member: any) => (member.userId = userId))
+  if (findUser) {
+    findUser.joinType = joinType
+  } else {
+    members.push({ userId, joinType, moreGuest })
+  }
 
-    const findUser = members.find( member => member.userId = userId )
-    if(findUser) {
-        findUser.joinType = joinType
-    } else {
-        members.push({ userId, joinType, moreGuest })
-    }
+  const updated = await collection.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { members } }
+  )
 
-    const updated = await collection.updateOne({_id: new ObjectId(id)}, {$set: { members }})
-
-    return res.json({ status: true, updated })
+  return res.json({ status: true, updated })
 }
 
 export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse
-  ) {
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  try {
+    const client = await clientPromise
+    const db = client.db(Constants.DB.NAME)
 
-    try {
-        const client = await clientPromise;
-        const db = client.db(Constants.DB.NAME);
+    const collection = db.collection(COLLECTION_NAME)
 
-        const collection = db.collection(COLLECTION_NAME)
-
-        console.log(req.method)
-        switch(req.method) {
-            // case "GET":
-            //     return list(req, res, collection)
-            case "POST":
-                return joinEvent(req, res, collection)
-            // case "PUT":
-            //     return update(req, res, collection)
-            // case "DELETE":
-            //     return deleteEvent(req, res, collection)
-            default:
-                res.status(404).json({status: false, message: 'Http method not found'})
-        }
-        
-    } catch (e) {
-        console.error(e);
-        res.status(500).json({status: false, message: e.message})
+    console.log(req.method)
+    switch (req.method) {
+      // case "GET":
+      //     return list(req, res, collection)
+      case "POST":
+        return joinEvent(req, res, collection)
+      // case "PUT":
+      //     return update(req, res, collection)
+      // case "DELETE":
+      //     return deleteEvent(req, res, collection)
+      default:
+        res
+          .status(404)
+          .json({ status: false, message: "Http method not found" })
     }
+  } catch (e) {
+    console.error(e)
+    res.status(500).json({ status: false, message: "Internal server error" })
   }
-  
+}

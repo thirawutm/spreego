@@ -3,6 +3,6 @@ const SetupIndexComponent = () => {
     <>
       <h1>SpreeGO! - Setup</h1>
     </>
-  );
-};
-export default SetupIndexComponent;
+  )
+}
+export default SetupIndexComponent
