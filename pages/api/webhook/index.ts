@@ -3,6 +3,7 @@ import { SpreeGOService } from "../../../services/spreego";
 
 type Data = {
   name: string;
+  error?: string;
 };
 
 async function messageController(reqBody: any): Promise<any> {
@@ -10,25 +11,43 @@ async function messageController(reqBody: any): Promise<any> {
   switch (cmd.toLowerCase()) {
     case "spreego":
       return SpreeGOService.start(reqBody);
-    default: {
-      break;
-    }
+    case "#เปิดตี้":
+    case "#mockเปิดตี้":
+      return SpreeGOService.setup(reqBody);
+    case "#ดูตี้ทั้งหมด":
+    case "#mockดูตี้ทั้งหมด":
+      return SpreeGOService.list(reqBody);
+    default:
+      return null;
   }
 }
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>,
-) {
+): Promise<void> {
   const messageType = req.body.events[0].type;
-  switch (messageType) {
-    case "message":
-      await messageController(req.body);
-    default: {
-      console.log(JSON.stringify(req.body, null, 1));
-      break;
-    }
-  }
 
-  res.status(200).json({ name: "Webhook" });
+  try {
+    switch (messageType) {
+      case "message": {
+        await messageController(req.body);
+        break;
+      }
+      default: {
+        console.log(JSON.stringify(req.body, null, 1));
+        break;
+      }
+    }
+
+    res.status(200).json({ name: "Webhook" });
+  } catch (error: any) {
+    const errorCode = error.statusCode || 500;
+    const errorMessage = error.message || error.statusMessage;
+
+    console.log(errorMessage);
+    await SpreeGOService.error(req.body);
+
+    res.status(errorCode).json({ name: "Webhook", error: errorMessage });
+  }
 }
