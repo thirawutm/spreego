@@ -4,7 +4,7 @@ import clientPromise from '../lib/mongodb'
 import styles from '../styles/Home.module.css'
 import { InferGetServerSidePropsType } from 'next'
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: any) {
   try {
     await clientPromise
     // `await clientPromise` will use the default database passed in the MONGODB_URI
