@@ -15,6 +15,9 @@ const Constants = {
     MD: 1440,
     LG: 1920,
   },
+  DB: {
+    NAME: 'spree-go-db'
+  }
 };
 
 export default Constants;
