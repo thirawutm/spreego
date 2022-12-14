@@ -3,7 +3,16 @@ import Error from "next/error"
 import { useEffect, useState } from "react"
 import Configs from "../config"
 import "../styles/globals.css"
-import { Profile } from "../types/line"
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment"
+import { LocalizationProvider } from "@mui/x-date-pickers"
+
+export type Profile = {
+  groupId?: string
+  userId: string
+  displayName: string
+  pictureUrl?: string
+  statusMessage?: string
+}
 
 export interface RootProps {
   profile?: Profile
@@ -21,7 +30,9 @@ export default function App({ Component, pageProps }: AppProps) {
         setIsInitLiffSuccess(false)
       } else {
         setIsInitLiffSuccess(true)
-        setProfile(await liff.getProfile())
+        const profile = await liff.getProfile()
+        const groupId = liff.getContext()?.groupId
+        setProfile({ ...profile, groupId })
       }
     }
 
@@ -31,7 +42,11 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [])
 
   if (isInitLiffSuccess === true) {
-    return <Component {...pageProps} profile={profile} />
+    return (
+      <LocalizationProvider dateAdapter={AdapterMoment}>
+        <Component {...pageProps} profile={profile} />
+      </LocalizationProvider>
+    )
   } else if (isInitLiffSuccess === false) {
     return <Error statusCode={404} title="Only support on mobile" />
   }
