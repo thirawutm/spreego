@@ -1,4 +1,5 @@
-import { Avatar, Button, Card, Grid, Paper, Typography } from "@mui/material"
+import { Avatar, Button, Card, colors, Grid, Paper, Typography } from "@mui/material"
+import { color, style } from "@mui/system"
 import axios from "axios"
 import Image from "next/image"
 import { useRouter } from "next/router"
@@ -18,6 +19,7 @@ export default function JoinEvent({ profile }: JoinEventProps) {
     pictureUrl: "",
     withFriends: 0,
   })
+  const [isJoin, setIsJoin] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -28,8 +30,28 @@ export default function JoinEvent({ profile }: JoinEventProps) {
         displayName: profile.displayName,
         pictureUrl: profile.pictureUrl,
       })
+      if(profile.userId && router.query.id) {
+        loadCurrentData()
+      }
     }
   }, [profile])
+
+  const loadCurrentData = async () => {
+    const {data: {event} } = await axios.get("/api/event/" + router.query.id)
+    // alert(profile.userId)
+    
+    if(event && event.members) {
+      const findCurrentUser = event.members.find(member => member.userId === joiner.userId)
+      
+      if(findCurrentUser) {
+        setIsJoin(findCurrentUser.joinType==='going')
+        if(findCurrentUser.withFriends) {
+          setJoiner({...joiner, withFriends: findCurrentUser.withFriends})
+        }
+      }
+      
+    }
+  }
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -42,6 +64,15 @@ export default function JoinEvent({ profile }: JoinEventProps) {
         withFriends: joiner.withFriends,
         joinType: "going",
       },
+    })
+    const liff = (await import("@line/liff")).default
+    liff.closeWindow()
+  }
+
+  const handleLeaveEvent = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    await axios.post("/api/event/leave", {
+      eventId: router.query.id,
+      userId: joiner.userId,
     })
     const liff = (await import("@line/liff")).default
     liff.closeWindow()
@@ -157,8 +188,20 @@ export default function JoinEvent({ profile }: JoinEventProps) {
         variant="contained"
         onClick={handleSubmit}
       >
-        Join now
+        {isJoin ? "Update Join" : "Join Now"}
       </Button>
+      {isJoin && <Button
+        style={{
+          marginTop: "16px",
+          width: "75%",
+        }}
+        color="error"
+        size="large"
+        variant="contained"
+        onClick={handleLeaveEvent}
+      >
+        Leave Event
+      </Button>}
     </div>
   )
 }

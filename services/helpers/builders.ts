@@ -5,7 +5,7 @@ import Configs from "../../config"
 
 export const formatDate = (input: any) => {
   if(!input) return ""
-  return moment(input).format("ddd dd MMMM YYYY")
+  return moment(input).format("ddd D MMMM YYYY")
 }
 
 export const formatTime = (input: any) => {

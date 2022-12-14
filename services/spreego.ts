@@ -177,7 +177,7 @@ export namespace SpreeGOService {
                   {
                     type: "icon",
                     url: reqBody.user.pictureUrl ?? `${Configs.HOST}/user-default.png`,
-                    size: "xl",
+                    size: "xxl",
                   },
                   {
                     type: "text",

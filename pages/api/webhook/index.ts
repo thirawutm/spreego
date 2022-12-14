@@ -26,7 +26,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ): Promise<void> {
-  console.log("🚀 ~ file: index.ts:29 ~ req.body", req.body)
 
   const messageType = req.body.events[0].type
 

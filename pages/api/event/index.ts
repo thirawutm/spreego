@@ -22,9 +22,11 @@ const create = async (
   res: NextApiResponse,
   collection: Document
 ) => {
+  const {host} = req.body
+  const doc = {...req.body, members: [{...host, withFriends: 0 }] }
 
-  const created = await collection.insertOne(req.body)
-  await SpreeGOService.announce({...req.body, eventId: created.insertedId.toString() })
+  const created = await collection.insertOne(doc)
+  await SpreeGOService.announce({...doc, eventId: created.insertedId.toString() })
 
   return res.json({ status: true, created })
 }
