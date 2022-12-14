@@ -1,20 +1,7 @@
 import { FlexBox, FlexComponent } from "@line/bot-sdk"
+import { Host, Location, Members } from "../../interfaces"
 
-interface Host {
-  userId: string
-  displayName: string
-  pictureUrl: string
-}
-
-interface Members {
-  userId: string
-  displayName: string
-  pictureUrl: string
-  joinType: string
-  withFriends: number
-}
-
-export namespace FlexMessageBuilder {
+export namespace FlexMessageBuilders {
   export function buildSetupHeader(): FlexBox {
     return {
       type: "box",
@@ -111,10 +98,10 @@ export namespace FlexMessageBuilder {
   }
 
   export function buildListBody(
-    location: string,
-    date: string,
-    startTime: string,
-    endTime: string,
+    location: Location,
+    date: Date,
+    startTime: Date,
+    endTime: Date,
     members: Members[]
   ): FlexBox {
     return {
@@ -141,7 +128,7 @@ export namespace FlexMessageBuilder {
               size: "sm",
               flex: 4,
               contents: [],
-              text: `${location}` as unknown as undefined,
+              text: `${location.text}` as unknown as undefined,
             },
           ],
         },

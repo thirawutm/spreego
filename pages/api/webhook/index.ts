@@ -14,8 +14,9 @@ async function messageController(reqBody: any): Promise<any> {
     case "#เปิดตี้":
       return SpreeGOService.setup(reqBody)
     case "#ดูตี้ทั้งหมด":
-    case "#mockดูตี้ทั้งหมด":
       return SpreeGOService.list(reqBody)
+    case "#testjoin":
+      return SpreeGOService.join(reqBody)
     default:
       return null
   }

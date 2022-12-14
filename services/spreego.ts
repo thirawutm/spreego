@@ -1,5 +1,7 @@
 import { Message } from "@line/bot-sdk"
 import Configs from "../config"
+import { Events } from "../interfaces"
+import { FlexMessageBuilders } from "./helpers/builders"
 import { LineService } from "./line"
 
 export namespace SpreeGOService {
@@ -7,25 +9,9 @@ export namespace SpreeGOService {
     const messages: Message[] = [
       {
         type: "text",
-        text: "ทำไรกันดี SpreePle 🎉",
+        text: "ทำไรกันดี SpreePle",
         quickReply: {
           items: [
-            {
-              type: "action",
-              action: {
-                type: "message",
-                label: "เปิดตี้ (mock)",
-                text: "#mockเปิดตี้",
-              },
-            },
-            {
-              type: "action",
-              action: {
-                type: "message",
-                label: "ดูตี้ทั้งหมด (mock)",
-                text: "#mockดูตี้ทั้งหมด",
-              },
-            },
             {
               type: "action",
               action: {
@@ -104,6 +90,97 @@ export namespace SpreeGOService {
                       label: "ใส่รายละเอียดตี้ที่จะเปิด",
                       uri: "https://liff.line.me/1657735002-y6LEPx1J/event/create",
                     },
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      },
+    ]
+    return LineService.replyMessage(reqBody, messages)
+  }
+
+  export function announce(reqBody: Events): Promise<any> {
+    const { name, host } = reqBody
+    const { location, date, startTime, endTime, members } = reqBody
+    const messages: Message[] = [
+      {
+        type: "flex",
+        altText: "มาเข้าตี้ซะดีๆ SpreePle",
+        contents: {
+          type: "bubble",
+          header: FlexMessageBuilders.buildListHeader(name, host),
+          body: FlexMessageBuilders.buildListBody(
+            location,
+            date,
+            startTime,
+            endTime,
+            members
+          ),
+        },
+      },
+    ]
+    return LineService.pushMessage(reqBody, messages)
+  }
+
+  export function join(reqBody: any): Promise<any> {
+    const messages: Message[] = [
+      {
+        type: "flex",
+        altText: "มาเข้าตี้ซะดีๆ SpreePle",
+        contents: {
+          type: "bubble",
+          header: {
+            type: "box",
+            layout: "horizontal",
+            backgroundColor: "#3371FF",
+            alignItems: "flex-end",
+            spacing: "md",
+            contents: [
+              {
+                type: "box",
+                layout: "vertical",
+                flex: 2,
+                contents: [
+                  {
+                    type: "text",
+                    text: "Basketball",
+                    weight: "bold",
+                    size: "xl",
+                    color: "#FFFFFF",
+                  },
+                  {
+                    type: "text",
+                    text: "หัวตี้ Thirawut Muninta",
+                    size: "sm",
+                    color: "#EEEEEE",
+                  },
+                ],
+              },
+              {
+                type: "image",
+                url: "https://614a-2001-fb1-98-f923-80d1-85d5-5a7-1a79.ap.ngrok.io/ren-confetti.png",
+              },
+            ],
+          },
+          body: {
+            type: "box",
+            layout: "vertical",
+            contents: [
+              {
+                type: "box",
+                layout: "baseline",
+                spacing: "md",
+                contents: [
+                  {
+                    type: "icon",
+                    url: "https://ca.slack-edge.com/T3ZPZ7J7M-U027PPTSYHG-b86ca57759f4-512",
+                    size: "xl",
+                  },
+                  {
+                    type: "text",
+                    text: "Thirawut Muninta is joining (+1)",
                   },
                 ],
               },

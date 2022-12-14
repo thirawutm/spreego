@@ -13,4 +13,9 @@ export namespace LineService {
     const replyToken = _extractReplyToken(reqBody)
     return lineClient.replyMessage(replyToken, messages)
   }
+
+  export function pushMessage(reqBody: any, messages: Message[]): Promise<any> {
+    const { groupId } = reqBody
+    return lineClient.pushMessage(groupId, messages)
+  }
 }
