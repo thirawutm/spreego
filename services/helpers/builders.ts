@@ -464,7 +464,7 @@ export namespace FlexMessageBuilders {
                 type: "text",
                 text: `${member.displayName}${
                   member.withFriends > 0 ? `+${member.withFriends}` : ""
-                }}`,
+                }`,
                 size: "xs",
                 margin: "sm",
               },
@@ -539,7 +539,7 @@ export namespace FlexMessageBuilders {
                 type: "text",
                 text: `${member.displayName}${
                   member.withFriends > 0 ? `+${member.withFriends}` : ""
-                }}`,
+                }`,
                 size: "xs",
                 margin: "sm",
               },
