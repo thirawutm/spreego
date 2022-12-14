@@ -131,12 +131,7 @@ export namespace SpreeGOService {
               {
                 type: "separator",
               },
-              {
-                type: "text",
-                text: `${reqBody.members.length} people are joining`,
-                size: "sm",
-                color: "#aaaaaa",
-              },
+              FlexMessageBuilders.buildJoinerCount(reqBody.members)
             ],
           },
         },
@@ -185,24 +180,9 @@ export namespace SpreeGOService {
                 ],
               },
               {
-                type: "button",
-                style: "primary",
-                color: "#3371FF",
-                action: {
-                  type: "uri",
-                  label: "Join",
-                  uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${reqBody.eventId}/join`,
-                },
-              },
-              {
                 type: "separator",
               },
-              {
-                type: "text",
-                text: `${reqBody.members.length} people are joining`,
-                size: "sm",
-                color: "#aaaaaa",
-              },
+              FlexMessageBuilders.buildJoinerCount(reqBody.members)
             ],
           },
         },

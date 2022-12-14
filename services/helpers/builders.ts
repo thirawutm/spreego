@@ -114,12 +114,7 @@ export namespace FlexMessageBuilders {
         {
           type: "separator",
         },
-        {
-          type: "text",
-          text: `${members.length} people are joining`,
-          size: "sm",
-          color: "#aaaaaa",
-        },
+        buildJoinerCount(members),
         buildJoiners(members),
       ],
     }
@@ -262,18 +257,27 @@ export namespace FlexMessageBuilders {
         {
           type: "separator",
         },
-        {
-          type: "text",
-          text: `${members.length} people are joining`,
-          size: "sm",
-          color: "#aaaaaa",
-        },
+        buildJoinerCount(members),
         buildJoiners(members),
       ],
     }
   }
 
-  export function buildJoiners(members: Members[] = []): FlexBox {
+  export function buildJoinerCount(members: Members[] = []): any  {
+    const memberGoing = members.filter( member => member.joinType === 'going')
+    const totalJoin = memberGoing.reduce((total : number, member) => {
+      return total += 1 + (parseInt(member.withFriends?.toString() ?? "0") ?? 0)
+    }, 0)
+
+    return {
+      type: "text",
+      text: `${totalJoin} people are joining`,
+      size: "sm",
+      color: "#aaaaaa",
+    }
+  }
+
+  function buildJoiners(members: Members[] = []): FlexBox {
     const joiners = members
       .filter((fil) => fil.joinType === "going")
       .reduce(
