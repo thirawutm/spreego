@@ -1,5 +1,17 @@
 import { FlexBox, FlexComponent } from "@line/bot-sdk"
 import { Host, Location, Members } from "../../interfaces"
+import moment from "moment"
+import Configs from "../../config"
+
+export const formatDate = (input: any) => {
+  if(!input) return ""
+  return moment(input).format("ddd dd MMMM YYYY")
+}
+
+export const formatTime = (input: any) => {
+  if(!input) return ""
+  return moment(input).format("HH:mm")
+}
 
 export namespace FlexMessageBuilders {
   export function buildSetupHeader(): FlexBox {
@@ -67,7 +79,7 @@ export namespace FlexMessageBuilders {
       layout: "horizontal",
       backgroundColor: "#3371FF",
       alignItems: "flex-end",
-      spacing: "md",
+      spacing: "sm",
       contents: [
         {
           type: "box",
@@ -102,7 +114,8 @@ export namespace FlexMessageBuilders {
     date: Date,
     startTime: Date,
     endTime: Date,
-    members: Members[]
+    members: Members[] = [],
+    eventId: String
   ): FlexBox {
     return {
       type: "box",
@@ -116,7 +129,7 @@ export namespace FlexMessageBuilders {
           contents: [
             {
               type: "text",
-              text: "Place",
+              text: "Location",
               color: "#aaaaaa",
               size: "sm",
               flex: 1,
@@ -146,7 +159,7 @@ export namespace FlexMessageBuilders {
             },
             {
               type: "text",
-              text: `${date}`,
+              text: `${formatDate(date)}`,
               wrap: true,
               color: "#666666",
               size: "sm",
@@ -168,7 +181,7 @@ export namespace FlexMessageBuilders {
             },
             {
               type: "text",
-              text: `${startTime} - ${endTime}`,
+              text: `${formatTime(startTime)} - ${formatTime(endTime)}`,
               wrap: true,
               color: "#666666",
               size: "sm",
@@ -183,16 +196,16 @@ export namespace FlexMessageBuilders {
           action: {
             type: "uri",
             label: "Join",
-            uri: "https://google.com",
+            uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${eventId}/join`,
           },
         },
         {
           type: "button",
-          color: "#FF0000",
+          color: "#333333",
           action: {
             type: "uri",
-            label: "Adjust Event",
-            uri: "https://google.com",
+            label: "More Detail",
+            uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${eventId}/join`,
           },
         },
         {
@@ -200,7 +213,7 @@ export namespace FlexMessageBuilders {
         },
         {
           type: "text",
-          text: "12 people are joining",
+          text: `${members.length} people are joining`,
           size: "sm",
           color: "#aaaaaa",
         },
@@ -209,7 +222,7 @@ export namespace FlexMessageBuilders {
     }
   }
 
-  function buildJoiners(members: Members[]): FlexBox {
+  function buildJoiners(members: Members[] = []): FlexBox {
     const joiners = members.reduce(
       (acc: { left: FlexComponent[]; right: FlexComponent[] }, member, idx) => {
         const joinerFlex: FlexComponent = {

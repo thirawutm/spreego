@@ -103,7 +103,7 @@ export namespace SpreeGOService {
 
   export function announce(reqBody: Events): Promise<any> {
     const { name, host } = reqBody
-    const { location, date, startTime, endTime, members } = reqBody
+    const { location, date, startTime, endTime, members, eventId } = reqBody
     const messages: Message[] = [
       {
         type: "flex",
@@ -116,7 +116,8 @@ export namespace SpreeGOService {
             date,
             startTime,
             endTime,
-            members
+            members,
+            eventId
           ),
         },
       },

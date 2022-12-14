@@ -24,4 +24,5 @@ export interface Events {
   host: Host
   location: Location
   members: Members[]
+  eventId: String
 }

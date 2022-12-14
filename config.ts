@@ -9,6 +9,7 @@ const Configs = {
   },
   LINE_LIFF: {
     LIFF_ID: process.env.NEXT_PUBLIC_LINE_LIFF_ID || "",
+    LIFF_URL: process.env.LINE_LIFF_URL || "",
     CHANNEL_SECRET: process.env.LINE_LIFF_CHANNEL_SECRET || "",
   },
   MONGODB: {
