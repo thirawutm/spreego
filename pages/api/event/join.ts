@@ -30,7 +30,7 @@ const joinEvent = async (
 
   const findUser = members.find((member: any) => (member.userId === userId))
   if (findUser) {
-    findUser.joinType = joinType
+    findUser.joinType = "going"
     findUser.displayName = displayName
     findUser.pictureUrl = pictureUrl
     findUser.withFriends = withFriends

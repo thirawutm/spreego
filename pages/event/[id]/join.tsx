@@ -71,6 +71,7 @@ export default function JoinEvent({ profile }: JoinEventProps) {
   }
 
   const handleLeaveEvent = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
     await axios.post("/api/event/leave", {
       eventId: router.query.id,
       userId: joiner.userId,
@@ -176,7 +177,7 @@ export default function JoinEvent({ profile }: JoinEventProps) {
               fontWeight: "bold",
             }}
             onClick={handleIncrease}
-            disabled={joiner.withFriends === 10}
+            disabled={withFriends === 10}
           >
             +
           </Button>
