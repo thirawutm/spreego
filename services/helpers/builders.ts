@@ -3,16 +3,14 @@ import { Host, Location, Members } from "../../interfaces"
 import moment from "moment"
 import Configs from "../../config"
 
-process.env.TZ = "Asia/Bangkok"
-
 export const formatDate = (input: any) => {
   if (!input) return ""
-  return moment(input).format("ddd D MMMM YYYY")
+  return moment(input).add(7, 'hours').format("ddd D MMMM YYYY")
 }
 
 export const formatTime = (input: any) => {
   if (!input) return ""
-  return moment(input).format("HH:mm")
+  return moment(input).add(7, 'hours').format("HH:mm")
 }
 
 export namespace FlexMessageBuilders {
