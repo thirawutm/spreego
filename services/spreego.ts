@@ -119,119 +119,171 @@ export namespace SpreeGOService {
     const messages: Message[] = [
       {
         type: "flex",
-        altText: "มาเข้าตี้ซะดีๆ SpreePle 🚀",
+        altText: "มาเข้าตี้ซะดีๆ SpreePle",
         contents: {
           type: "carousel",
           contents: [
             {
               type: "bubble",
-              hero: {
-                type: "image",
-                url: "https://lh5.googleusercontent.com/p/AF1QipMSaBclL0pmNMCp43c4nb4MzT7bUgW0c5gK81Vo=w426-h240-k-no",
-                size: "full",
-                aspectRatio: "20:13",
-                aspectMode: "cover",
-                action: {
-                  type: "uri",
-                  label: "Google Maps",
-                  uri: "http://linecorp.com/",
-                },
+              header: {
+                type: "box",
+                layout: "horizontal",
+                backgroundColor: "#3371FF",
+                alignItems: "flex-end",
+                spacing: "md",
+                contents: [
+                  {
+                    type: "box",
+                    layout: "vertical",
+                    flex: 2,
+                    contents: [
+                      {
+                        type: "text",
+                        text: "Basketball",
+                        weight: "bold",
+                        size: "xl",
+                        color: "#FFFFFF",
+                      },
+                      {
+                        type: "text",
+                        text: "หัวตี้ Thirawut Muninta",
+                        size: "sm",
+                        color: "#EEEEEE",
+                      },
+                    ],
+                  },
+                  {
+                    type: "image",
+                    url: "https://614a-2001-fb1-98-f923-80d1-85d5-5a7-1a79.ap.ngrok.io/ren-confetti.png",
+                  },
+                ],
               },
               body: {
                 type: "box",
                 layout: "vertical",
+                spacing: "md",
                 contents: [
                   {
-                    type: "text",
-                    text: "Basketball (3x3)",
-                    weight: "bold",
-                    size: "xl",
+                    type: "box",
+                    layout: "horizontal",
+                    spacing: "sm",
+                    contents: [
+                      {
+                        type: "text",
+                        text: "Place",
+                        color: "#aaaaaa",
+                        size: "sm",
+                        flex: 1,
+                      },
+                      {
+                        type: "text",
+                        wrap: true,
+                        color: "#666666",
+                        size: "sm",
+                        flex: 4,
+                        contents: [],
+                        text: "The Street Ratchada,\nRatchadaphisek Rd, Din Daeng, Bangkok 10400" as unknown as undefined,
+                      },
+                    ],
                   },
                   {
                     type: "box",
-                    layout: "vertical",
-                    margin: "lg",
+                    layout: "baseline",
+                    spacing: "sm",
+                    contents: [
+                      {
+                        type: "text",
+                        text: "Date",
+                        color: "#aaaaaa",
+                        size: "sm",
+                        flex: 1,
+                      },
+                      {
+                        type: "text",
+                        text: "Tuesday 20 Dec 2022",
+                        wrap: true,
+                        color: "#666666",
+                        size: "sm",
+                        flex: 4,
+                      },
+                    ],
+                  },
+                  {
+                    type: "box",
+                    layout: "baseline",
+                    spacing: "sm",
+                    contents: [
+                      {
+                        type: "text",
+                        text: "Time",
+                        color: "#aaaaaa",
+                        size: "sm",
+                        flex: 1,
+                      },
+                      {
+                        type: "text",
+                        text: "20:00 - 22:00",
+                        wrap: true,
+                        color: "#666666",
+                        size: "sm",
+                        flex: 4,
+                      },
+                    ],
+                  },
+                  {
+                    type: "button",
+                    style: "primary",
+                    color: "#3371FF",
+                    action: {
+                      type: "uri",
+                      label: "Join",
+                      uri: "https://google.com",
+                    },
+                  },
+                  {
+                    type: "button",
+                    color: "#FF0000",
+                    action: {
+                      type: "uri",
+                      label: "Adjust Event",
+                      uri: "https://google.com",
+                    },
+                  },
+                  {
+                    type: "separator",
+                  },
+                  {
+                    type: "text",
+                    text: "12 people are joining",
+                    size: "sm",
+                    color: "#aaaaaa",
+                  },
+                  {
+                    type: "box",
+                    layout: "horizontal",
                     spacing: "sm",
                     contents: [
                       {
                         type: "box",
-                        layout: "horizontal",
-                        spacing: "sm",
+                        layout: "vertical",
+                        spacing: "xl",
+                        flex: 2,
                         contents: [
                           {
-                            type: "text",
-                            text: "Place",
-                            color: "#aaaaaa",
-                            size: "sm",
-                            flex: 1,
-                          },
-                          {
-                            type: "text",
-                            wrap: true,
-                            color: "#666666",
-                            size: "sm",
-                            flex: 4,
-                            contents: [],
-                            text: "The Street Ratchada,\nRatchadaphisek Rd, Din Daeng, Bangkok 10400" as unknown as undefined,
-                          },
-                        ],
-                      },
-                      {
-                        type: "box",
-                        layout: "baseline",
-                        spacing: "sm",
-                        contents: [
-                          {
-                            type: "text",
-                            text: "Date",
-                            color: "#aaaaaa",
-                            size: "sm",
-                            flex: 1,
-                          },
-                          {
-                            type: "text",
-                            text: "Tuesday 20 Dec 2022",
-                            wrap: true,
-                            color: "#666666",
-                            size: "sm",
-                            flex: 4,
-                          },
-                        ],
-                      },
-                      {
-                        type: "box",
-                        layout: "baseline",
-                        spacing: "sm",
-                        contents: [
-                          {
-                            type: "text",
-                            text: "Time",
-                            color: "#aaaaaa",
-                            size: "sm",
-                            flex: 1,
-                          },
-                          {
-                            type: "text",
-                            text: "20:00 - 22:00",
-                            wrap: true,
-                            color: "#666666",
-                            size: "sm",
-                            flex: 4,
-                          },
-                        ],
-                      },
-                      {
-                        type: "box",
-                        layout: "horizontal",
-                        contents: [
-                          {
-                            type: "text",
-                            color: "#aaaaaa",
-                            size: "xs",
-                            text: "Joiners",
-                            margin: "none",
-                            align: "start",
-                            flex: 1,
+                            type: "box",
+                            layout: "baseline",
+                            contents: [
+                              {
+                                type: "icon",
+                                url: "https://ca.slack-edge.com/T3ZPZ7J7M-U027PPTSYHG-b86ca57759f4-512",
+                              },
+                              {
+                                type: "text",
+                                text: "Thirawut Muninta",
+                                size: "xs",
+                                margin: "sm",
+                              },
+                            ],
                           },
                           {
                             type: "box",
@@ -239,177 +291,15 @@ export namespace SpreeGOService {
                             contents: [
                               {
                                 type: "icon",
-                                url: "https://gitlab.com/uploads/-/system/user/avatar/9296008/avatar.png",
-                              },
-                              {
-                                type: "icon",
-                                url: "https://gitlab.com/uploads/-/system/user/avatar/11723687/avatar.png",
-                              },
-                              {
-                                type: "icon",
-                                url: "https://gitlab.com/uploads/-/system/user/avatar/9416234/avatar.png",
-                              },
-                              {
-                                type: "icon",
-                                url: "https://gitlab.com/uploads/-/system/user/avatar/10645646/avatar.png",
+                                url: "https://ca.slack-edge.com/T3ZPZ7J7M-U027PPTSYHG-b86ca57759f4-512",
                               },
                               {
                                 type: "text",
-                                wrap: true,
-                                color: "#666666",
-                                size: "sm",
-                                text: "and 12 joiners",
+                                text: "Thirawut Muninta",
+                                size: "xs",
+                                margin: "sm",
                               },
                             ],
-                            flex: 4,
-                            spacing: "md",
-                            offsetStart: "5px",
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-              footer: {
-                type: "box",
-                layout: "vertical",
-                spacing: "sm",
-                contents: [
-                  {
-                    type: "button",
-                    style: "link",
-                    height: "sm",
-                    action: {
-                      type: "uri",
-                      label: "GOOGLE MAPS",
-                      uri: "https://www.google.com/maps/place/THE+STREET+RATCHADA/@13.7705118,100.5722782,15z/data=!4m2!3m1!1s0x0:0xb0e50b499216c2d7?sa=X&ved=2ahUKEwiCj9uYjeX7AhWjSGwGHWvHAtEQ_BJ6BAhnEAg",
-                    },
-                  },
-                  {
-                    type: "button",
-                    style: "link",
-                    height: "sm",
-                    action: {
-                      type: "uri",
-                      label: "CANCLE",
-                      uri: "https://linecorp.com",
-                    },
-                    color: "#F15555",
-                  },
-                ],
-                flex: 0,
-              },
-            },
-            {
-              type: "bubble",
-              hero: {
-                type: "image",
-                url: "https://lh5.googleusercontent.com/p/AF1QipNC6Mc2zkTX_1-e3pbQ0GR02R2I11dQGx4YPRhL=w408-h242-k-no",
-                size: "full",
-                aspectRatio: "20:13",
-                aspectMode: "cover",
-                action: {
-                  type: "uri",
-                  label: "Google Maps",
-                  uri: "http://linecorp.com/",
-                },
-              },
-              body: {
-                type: "box",
-                layout: "vertical",
-                contents: [
-                  {
-                    type: "text",
-                    text: "เตะบอลกันค้าบ",
-                    weight: "bold",
-                    size: "xl",
-                  },
-                  {
-                    type: "box",
-                    layout: "vertical",
-                    margin: "lg",
-                    spacing: "sm",
-                    contents: [
-                      {
-                        type: "box",
-                        layout: "horizontal",
-                        spacing: "sm",
-                        contents: [
-                          {
-                            type: "text",
-                            text: "Place",
-                            color: "#aaaaaa",
-                            size: "sm",
-                            flex: 1,
-                          },
-                          {
-                            type: "text",
-                            wrap: true,
-                            color: "#666666",
-                            size: "sm",
-                            flex: 4,
-                            contents: [],
-                            text: "Soccer Pro Ratchada 18,\n888 Soi Yu Charoen29 Samsen Nok, Huai Khwang, Bangkok 10310" as unknown as undefined,
-                          },
-                        ],
-                      },
-                      {
-                        type: "box",
-                        layout: "baseline",
-                        spacing: "sm",
-                        contents: [
-                          {
-                            type: "text",
-                            text: "Date",
-                            color: "#aaaaaa",
-                            size: "sm",
-                            flex: 1,
-                          },
-                          {
-                            type: "text",
-                            text: "Wednesday 14 Dec 2022",
-                            wrap: true,
-                            color: "#666666",
-                            size: "sm",
-                            flex: 4,
-                          },
-                        ],
-                      },
-                      {
-                        type: "box",
-                        layout: "baseline",
-                        spacing: "sm",
-                        contents: [
-                          {
-                            type: "text",
-                            text: "Time",
-                            color: "#aaaaaa",
-                            size: "sm",
-                            flex: 1,
-                          },
-                          {
-                            type: "text",
-                            text: "20:00 - 22:00",
-                            wrap: true,
-                            color: "#666666",
-                            size: "sm",
-                            flex: 4,
-                          },
-                        ],
-                      },
-                      {
-                        type: "box",
-                        layout: "horizontal",
-                        contents: [
-                          {
-                            type: "text",
-                            color: "#aaaaaa",
-                            size: "xs",
-                            text: "Joiners",
-                            margin: "none",
-                            align: "start",
-                            flex: 1,
                           },
                           {
                             type: "box",
@@ -417,66 +307,173 @@ export namespace SpreeGOService {
                             contents: [
                               {
                                 type: "icon",
-                                url: "https://gitlab.com/uploads/-/system/user/avatar/9296008/avatar.png",
-                              },
-                              {
-                                type: "icon",
-                                url: "https://gitlab.com/uploads/-/system/user/avatar/11723687/avatar.png",
-                              },
-                              {
-                                type: "icon",
-                                url: "https://gitlab.com/uploads/-/system/user/avatar/9416234/avatar.png",
-                              },
-                              {
-                                type: "icon",
-                                url: "https://gitlab.com/uploads/-/system/user/avatar/10645646/avatar.png",
+                                url: "https://ca.slack-edge.com/T3ZPZ7J7M-U027PPTSYHG-b86ca57759f4-512",
                               },
                               {
                                 type: "text",
-                                wrap: true,
-                                color: "#666666",
-                                size: "sm",
-                                text: "and 12 joiners",
+                                text: "Thirawut Muninta",
+                                size: "xs",
+                                margin: "sm",
                               },
                             ],
-                            flex: 4,
-                            spacing: "md",
-                            offsetStart: "5px",
+                          },
+                          {
+                            type: "box",
+                            layout: "baseline",
+                            contents: [
+                              {
+                                type: "icon",
+                                url: "https://ca.slack-edge.com/T3ZPZ7J7M-U027PPTSYHG-b86ca57759f4-512",
+                              },
+                              {
+                                type: "text",
+                                text: "Thirawut Muninta",
+                                size: "xs",
+                                margin: "sm",
+                              },
+                            ],
+                          },
+                          {
+                            type: "box",
+                            layout: "baseline",
+                            contents: [
+                              {
+                                type: "icon",
+                                url: "https://ca.slack-edge.com/T3ZPZ7J7M-U027PPTSYHG-b86ca57759f4-512",
+                              },
+                              {
+                                type: "text",
+                                text: "Thirawut Muninta",
+                                size: "xs",
+                                margin: "sm",
+                              },
+                            ],
+                          },
+                          {
+                            type: "box",
+                            layout: "baseline",
+                            contents: [
+                              {
+                                type: "icon",
+                                url: "https://ca.slack-edge.com/T3ZPZ7J7M-U027PPTSYHG-b86ca57759f4-512",
+                              },
+                              {
+                                type: "text",
+                                text: "Thirawut Muninta",
+                                size: "xs",
+                                margin: "sm",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        type: "box",
+                        layout: "vertical",
+                        spacing: "xl",
+                        flex: 2,
+                        contents: [
+                          {
+                            type: "box",
+                            layout: "baseline",
+                            contents: [
+                              {
+                                type: "icon",
+                                url: "https://ca.slack-edge.com/T3ZPZ7J7M-U029UTTTHA6-3fa5adaa004e-512",
+                              },
+                              {
+                                type: "text",
+                                text: "Chalermchon Onbua",
+                                size: "xs",
+                                margin: "sm",
+                              },
+                            ],
+                          },
+                          {
+                            type: "box",
+                            layout: "baseline",
+                            contents: [
+                              {
+                                type: "icon",
+                                url: "https://ca.slack-edge.com/T3ZPZ7J7M-U029UTTTHA6-3fa5adaa004e-512",
+                              },
+                              {
+                                type: "text",
+                                text: "Chalermchon Onbua",
+                                size: "xs",
+                                margin: "sm",
+                              },
+                            ],
+                          },
+                          {
+                            type: "box",
+                            layout: "baseline",
+                            contents: [
+                              {
+                                type: "icon",
+                                url: "https://ca.slack-edge.com/T3ZPZ7J7M-U029UTTTHA6-3fa5adaa004e-512",
+                              },
+                              {
+                                type: "text",
+                                text: "Chalermchon Onbua",
+                                size: "xs",
+                                margin: "sm",
+                              },
+                            ],
+                          },
+                          {
+                            type: "box",
+                            layout: "baseline",
+                            contents: [
+                              {
+                                type: "icon",
+                                url: "https://ca.slack-edge.com/T3ZPZ7J7M-U029UTTTHA6-3fa5adaa004e-512",
+                              },
+                              {
+                                type: "text",
+                                text: "Chalermchon Onbua",
+                                size: "xs",
+                                margin: "sm",
+                              },
+                            ],
+                          },
+                          {
+                            type: "box",
+                            layout: "baseline",
+                            contents: [
+                              {
+                                type: "icon",
+                                url: "https://ca.slack-edge.com/T3ZPZ7J7M-U029UTTTHA6-3fa5adaa004e-512",
+                              },
+                              {
+                                type: "text",
+                                text: "Chalermchon Onbua",
+                                size: "xs",
+                                margin: "sm",
+                              },
+                            ],
+                          },
+                          {
+                            type: "box",
+                            layout: "baseline",
+                            contents: [
+                              {
+                                type: "icon",
+                                url: "https://ca.slack-edge.com/T3ZPZ7J7M-U029UTTTHA6-3fa5adaa004e-512",
+                              },
+                              {
+                                type: "text",
+                                text: "Chalermchon Onbua",
+                                size: "xs",
+                                margin: "sm",
+                              },
+                            ],
                           },
                         ],
                       },
                     ],
                   },
                 ],
-              },
-              footer: {
-                type: "box",
-                layout: "vertical",
-                spacing: "sm",
-                contents: [
-                  {
-                    type: "button",
-                    style: "link",
-                    height: "sm",
-                    action: {
-                      type: "uri",
-                      label: "GOOGLE MAPS",
-                      uri: "https://www.google.com/maps/place/THE+STREET+RATCHADA/@13.7705118,100.5722782,15z/data=!4m2!3m1!1s0x0:0xb0e50b499216c2d7?sa=X&ved=2ahUKEwiCj9uYjeX7AhWjSGwGHWvHAtEQ_BJ6BAhnEAg",
-                    },
-                  },
-                  {
-                    type: "button",
-                    style: "link",
-                    height: "sm",
-                    action: {
-                      type: "uri",
-                      label: "CANCLE",
-                      uri: "https://linecorp.com",
-                    },
-                    color: "#F15555",
-                  },
-                ],
-                flex: 0,
               },
             },
           ],
