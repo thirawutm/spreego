@@ -139,6 +139,72 @@ export namespace SpreeGOService {
     return LineService.pushMessage(reqBody, messages)
   }
 
+  export function leave(reqBody: any): Promise<any> {
+    const messages: Message[] = [
+      {
+        type: "flex",
+        altText: "มาเข้าตี้ซะดีๆ SpreePle",
+        contents: {
+          type: "bubble",
+          header: FlexMessageBuilders.buildListHeader(
+            reqBody.name,
+            reqBody.host,
+            "#E0a38e"
+          ),
+          body: {
+            type: "box",
+            layout: "vertical",
+            spacing: "md",
+            contents: [
+              {
+                type: "box",
+                layout: "baseline",
+                spacing: "md",
+                contents: [
+                  {
+                    type: "icon",
+                    url:
+                      reqBody.user.pictureUrl ??
+                      `${Configs.HOST}/user-default.png`,
+                    size: "xxl",
+                  },
+                  {
+                    type: "text",
+                    text: `${reqBody.user.displayName} is declined ${
+                      reqBody.user.withFriends > 0
+                        ? `(+${reqBody.user.withFriends})`
+                        : ""
+                    }`,
+                  },
+                ],
+              },
+              {
+                type: "button",
+                style: "primary",
+                color: "#3371FF",
+                action: {
+                  type: "uri",
+                  label: "Join",
+                  uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${reqBody.eventId}/join`,
+                },
+              },
+              {
+                type: "separator",
+              },
+              {
+                type: "text",
+                text: `${reqBody.members.length} people are joining`,
+                size: "sm",
+                color: "#aaaaaa",
+              },
+            ],
+          },
+        },
+      },
+    ]
+    return LineService.pushMessage(reqBody, messages)
+  }
+
   export function list(reqBody: any, events: Events[]): Promise<any> {
     const contents: any[] = events
       .map((event: Events) => ({

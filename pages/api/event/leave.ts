@@ -3,6 +3,7 @@ import clientPromise from "../../../lib/mongodb"
 import type { NextApiRequest, NextApiResponse } from "next"
 import Constants from "../../../constants"
 import { Document, ObjectId } from "mongodb"
+import { SpreeGOService } from "../../../services/spreego"
 
 const COLLECTION_NAME = "events"
 
@@ -36,6 +37,8 @@ const leaveEvent = async (
     { _id: new ObjectId(eventId) },
     { $set: { members } }
   )
+
+  await SpreeGOService.leave({ user: findUser, name: event.name, host: event.host, eventId: event._id.toString(), groupId: event.groupId, members: members })
 
   return res.json({ status: true, updated })
 }

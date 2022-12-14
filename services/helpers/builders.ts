@@ -3,8 +3,6 @@ import { Host, Location, Members } from "../../interfaces"
 import moment from "moment"
 import Configs from "../../config"
 
-process.env.TZ = "Asia/Bangkok"
-
 export const formatDate = (input: any) => {
   if (!input) return ""
   return moment(input).format("ddd D MMMM YYYY")
@@ -75,11 +73,11 @@ export namespace FlexMessageBuilders {
     }
   }
 
-  export function buildListHeader(name: string, host: Host): FlexBox {
+  export function buildListHeader(name: string, host: Host, backgroundColor: string = "#3371FF"): FlexBox {
     return {
       type: "box",
       layout: "horizontal",
-      backgroundColor: "#3371FF",
+      backgroundColor,
       alignItems: "flex-end",
       spacing: "sm",
       contents: [
