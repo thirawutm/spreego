@@ -43,7 +43,13 @@ export namespace SpreeGOService {
         contents: {
           type: "bubble",
           header: FlexMessageBuilders.buildSetupHeader(),
-          body: FlexMessageBuilders.buildSetupBody(),
+          body: FlexMessageBuilders.buildSetupBody(
+            "มาเลยครับ เดี๋ยวน้องเรนช่วยเปิดตี้ให้เอง",
+            {
+              label: "ใส่รายละเอียดตี้ที่จะเปิด",
+              uri: `${Configs.LINE_LIFF.LIFF_URL}/event/create`,
+            }
+          ),
         },
       },
     ]
@@ -231,6 +237,67 @@ export namespace SpreeGOService {
       },
     ]
     return LineService.replyMessage(reqBody, messages)
+  }
+
+  export function summary(reqBody: any, events: Events[]): Promise<any> {
+    const messages: Message[] = events.map(
+      (event: Events): Message => ({
+        type: "flex",
+        altText: `ตี้ ${event.name} สำเร็จลุล่วงแล้วว`,
+        contents: {
+          type: "bubble",
+          header: {
+            type: "box",
+            layout: "horizontal",
+            backgroundColor: "#3371FF",
+            alignItems: "flex-end",
+            spacing: "sm",
+            contents: [
+              {
+                type: "box",
+                layout: "vertical",
+                spacing: "sm",
+                flex: 2,
+                contents: [
+                  {
+                    type: "text",
+                    text: "🎉 WE DID IT 🎉",
+                    weight: "bold",
+                    size: "lg",
+                    color: "#FFFFFF",
+                  },
+                  {
+                    type: "text",
+                    text: `${event.name}`,
+                    size: "lg",
+                    color: "#FFFFFF",
+                  },
+                  {
+                    type: "text",
+                    text: `by ${event.host.displayName}`,
+                    size: "sm",
+                    color: "#EEEEEE",
+                  },
+                ],
+              },
+              {
+                type: "image",
+                url: `${Configs.HOST}/ren-confetti.png`,
+              },
+            ],
+          },
+          body: FlexMessageBuilders.buildSetupBodyWithJoiners(
+            `อย่าลืมจ่ายเงิน @${event.host.displayName} :)`,
+            {
+              label: "คำนวณเงิน",
+              uri: `${Configs.LINE_LIFF.LIFF_URL}/event/calculate`,
+            },
+            event.members
+          ),
+        },
+      })
+    )
+    return LineService.replyMessage(reqBody, [messages[0]])
   }
 
   export function error(reqBody: any): Promise<any> {

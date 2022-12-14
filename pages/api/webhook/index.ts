@@ -21,8 +21,12 @@ async function messageController(reqBody: any): Promise<any> {
         .then((res) => res.data.events)
       return SpreeGOService.list(reqBody, events)
     }
-    case "#testjoin":
-      return SpreeGOService.join(reqBody)
+    case "#testsummary": {
+      const events = await axios
+        .get(`${Configs.HOST}/api/event`)
+        .then((res) => res.data.events)
+      return SpreeGOService.summary(reqBody, events)
+    }
     default:
       return null
   }
@@ -32,7 +36,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ): Promise<void> {
-
   const messageType = req.body.events[0].type
 
   try {

@@ -38,8 +38,13 @@ export namespace FlexMessageBuilders {
       ],
     }
   }
-
-  export function buildSetupBody(): FlexBox {
+  export function buildSetupBody(
+    text: string,
+    button: {
+      label: string
+      uri: string
+    }
+  ): FlexBox {
     return {
       type: "box",
       layout: "vertical",
@@ -47,7 +52,7 @@ export namespace FlexMessageBuilders {
       contents: [
         {
           type: "text",
-          text: "มาเลยครับ เดี๋ยวน้องเรนช่วยเปิดตี้ให้เอง",
+          text: `${text}`,
         },
         {
           type: "separator",
@@ -63,12 +68,59 @@ export namespace FlexMessageBuilders {
               color: "#FFFFFF",
               action: {
                 type: "uri",
-                label: "ใส่รายละเอียดตี้ที่จะเปิด",
-                uri: `${Configs.LINE_LIFF.LIFF_URL}/event/create`,
+                label: `${button.label}`,
+                uri: `${button.uri}`,
               },
             },
           ],
         },
+      ],
+    }
+  }
+  export function buildSetupBodyWithJoiners(
+    text: string,
+    button: {
+      label: string
+      uri: string
+    },
+    members: Members[]
+  ): FlexBox {
+    return {
+      type: "box",
+      layout: "vertical",
+      spacing: "xl",
+      contents: [
+        {
+          type: "text",
+          text: `${text}`,
+        },
+        {
+          type: "box",
+          layout: "vertical",
+          backgroundColor: "#3371FF",
+          cornerRadius: "md",
+          contents: [
+            {
+              type: "button",
+              color: "#FFFFFF",
+              action: {
+                type: "uri",
+                label: `${button.label}`,
+                uri: `${button.uri}`,
+              },
+            },
+          ],
+        },
+        {
+          type: "separator",
+        },
+        {
+          type: "text",
+          text: `${members.length} people are joining`,
+          size: "sm",
+          color: "#aaaaaa",
+        },
+        buildJoiners(members),
       ],
     }
   }
@@ -95,7 +147,7 @@ export namespace FlexMessageBuilders {
             },
             {
               type: "text",
-              text: `หัวตี้ ${host.displayName}`,
+              text: `by ${host.displayName}`,
               size: "sm",
               color: "#EEEEEE",
             },
@@ -108,7 +160,6 @@ export namespace FlexMessageBuilders {
       ],
     }
   }
-
   export function buildListBody(
     location: Location,
     date: Date,
@@ -132,14 +183,14 @@ export namespace FlexMessageBuilders {
               text: "Location",
               color: "#aaaaaa",
               size: "sm",
-              flex: 1,
+              flex: 3,
             },
             {
               type: "text",
               wrap: true,
               color: "#666666",
               size: "sm",
-              flex: 4,
+              flex: 11,
               contents: [],
               text: `${location.text}` as unknown as undefined,
             },
@@ -155,7 +206,7 @@ export namespace FlexMessageBuilders {
               text: "Date",
               color: "#aaaaaa",
               size: "sm",
-              flex: 1,
+              flex: 3,
             },
             {
               type: "text",
@@ -163,7 +214,7 @@ export namespace FlexMessageBuilders {
               wrap: true,
               color: "#666666",
               size: "sm",
-              flex: 4,
+              flex: 11,
             },
           ],
         },
@@ -177,7 +228,7 @@ export namespace FlexMessageBuilders {
               text: "Time",
               color: "#aaaaaa",
               size: "sm",
-              flex: 1,
+              flex: 3,
             },
             {
               type: "text",
@@ -185,7 +236,7 @@ export namespace FlexMessageBuilders {
               wrap: true,
               color: "#666666",
               size: "sm",
-              flex: 4,
+              flex: 11,
             },
           ],
         },
@@ -222,7 +273,7 @@ export namespace FlexMessageBuilders {
     }
   }
 
-  function buildJoiners(members: Members[] = []): FlexBox {
+  export function buildJoiners(members: Members[] = []): FlexBox {
     const joiners = members
       .filter((fil) => fil.joinType === "going")
       .reduce(
