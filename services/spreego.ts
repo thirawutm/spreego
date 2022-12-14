@@ -176,6 +176,7 @@ export namespace SpreeGOService {
           header: FlexMessageBuilders.buildListHeader(
             reqBody.name,
             reqBody.host,
+            reqBody.eventId,
             "#E0a38e"
           ),
           body: {
@@ -197,7 +198,7 @@ export namespace SpreeGOService {
                   },
                   {
                     type: "text",
-                    text: `${reqBody.user.displayName} is declined ${
+                    text: `${reqBody.user.displayName} has declined ${
                       reqBody.user.withFriends > 0
                         ? `(+${reqBody.user.withFriends})`
                         : ""
@@ -209,6 +210,9 @@ export namespace SpreeGOService {
                 type: "separator",
               },
               FlexMessageBuilders.buildJoinerCount(reqBody.members),
+              FlexMessageBuilders.buildJoiners(reqBody.members),
+              FlexMessageBuilders.buildDeserterCount(reqBody.members),
+              FlexMessageBuilders.buildDeserters(reqBody.members),
             ],
           },
         },

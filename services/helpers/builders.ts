@@ -443,7 +443,7 @@ export namespace FlexMessageBuilders {
       color: "#aaaaaa",
     }
   }
-  function buildJoiners(members: Members[] = []): FlexBox {
+  export function buildJoiners(members: Members[] = []): FlexBox {
     const joiners = members
       .filter((fil) => fil.joinType === "going")
       .reduce(
@@ -516,7 +516,7 @@ export namespace FlexMessageBuilders {
       color: "#aaaaaa",
     }
   }
-  function buildDeserters(members: Members[] = []): FlexBox {
+  export function buildDeserters(members: Members[] = []): FlexBox {
     const joiners = members
       .filter((fil) => fil.joinType === "decline")
       .reduce(
