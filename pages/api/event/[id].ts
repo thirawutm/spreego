@@ -33,9 +33,14 @@ const deleteEvent = async (
     return res.status(400).json({ status: false, message: "id must be string" })
   }
 
-  const deleted = await collection.deleteOne({ _id: new ObjectId(id) })
+  const updated = await collection.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { status: false } }
+  )
 
-  return res.json({ status: true, deleted })
+  // const deleted = await collection.deleteOne({ _id: new ObjectId(id) })
+
+  return res.json({ status: true, deleted: updated })
 }
 
 export default async function handler(

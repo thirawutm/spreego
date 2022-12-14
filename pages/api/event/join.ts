@@ -22,6 +22,10 @@ const joinEvent = async (
   if (!event)
     res.status(404).json({ status: false, message: "Event is not found" })
 
+  if (event.status===false) {
+    res.status(500).json({ status: false, message: "Event is deleted" })
+  }
+
   const { members = [] } = event
 
   const findUser = members.find((member: any) => (member.userId === userId))

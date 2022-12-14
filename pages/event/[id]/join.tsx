@@ -31,17 +31,17 @@ export default function JoinEvent({ profile }: JoinEventProps) {
         pictureUrl: profile.pictureUrl,
       })
       if(profile.userId && router.query.id) {
-        loadCurrentData()
+        loadCurrentData(profile.userId)
       }
     }
   }, [profile])
 
-  const loadCurrentData = async () => {
+  const loadCurrentData = async (userId: string) => {
     const {data: {event} } = await axios.get("/api/event/" + router.query.id)
     // alert(profile.userId)
     
-    if(event && event.members) {
-      const findCurrentUser = event.members.find((member: { userId: string }) => member.userId === joiner.userId)
+    if(event && event.members && event.members.length > 0) {
+      const findCurrentUser = event.members.find((member: any) => member.userId === userId)
       
       if(findCurrentUser) {
         setIsJoin(findCurrentUser.joinType==='going')
