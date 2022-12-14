@@ -1,6 +1,5 @@
 import { Avatar, Button, Card, Grid, Paper, Typography } from "@mui/material"
 import axios from "axios"
-import Head from "next/head"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -35,7 +34,7 @@ export default function JoinEvent({ profile }: JoinEventProps) {
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     await axios.post("/api/event/join", {
-      id: router.query.id,
+      eventId: router.query.id,
       user: {
         userId: joiner.userId,
         displayName: joiner.displayName,
@@ -44,6 +43,8 @@ export default function JoinEvent({ profile }: JoinEventProps) {
         joinType: "going",
       },
     })
+    const liff = (await import("@line/liff")).default
+    liff.closeWindow()
   }
 
   const handleIncrease = () => {
