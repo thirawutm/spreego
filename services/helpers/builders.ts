@@ -205,7 +205,7 @@ export namespace FlexMessageBuilders {
           action: {
             type: "uri",
             label: "More Detail",
-            uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${eventId}/join`,
+            uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${eventId}`,
           },
         },
         {

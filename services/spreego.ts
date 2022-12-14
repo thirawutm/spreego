@@ -181,9 +181,28 @@ export namespace SpreeGOService {
                   },
                   {
                     type: "text",
-                    text: "Thirawut Muninta is joining (+1)",
+                    text: `${reqBody.user.displayName} is joining ${reqBody.user.withFriends>0 ? `(+${reqBody.user.withFriends})` : ""}`,
                   },
                 ],
+              },
+              {
+                type: "button",
+                style: "primary",
+                color: "#3371FF",
+                action: {
+                  type: "uri",
+                  label: "Join",
+                  uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${reqBody.eventId}/join`,
+                },
+              },
+              {
+                type: "separator",
+              },
+              {
+                type: "text",
+                text: `${reqBody.members.length} people are joining`,
+                size: "sm",
+                color: "#aaaaaa",
               },
             ],
           },
