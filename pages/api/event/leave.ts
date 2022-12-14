@@ -6,14 +6,14 @@ import { Document, ObjectId } from "mongodb"
 
 const COLLECTION_NAME = "events"
 
-const joinEvent = async (
+const leaveEvent = async (
   req: NextApiRequest,
   res: NextApiResponse,
   collection: Document
 ) => {
   const {
     eventId,
-    user: { userId, displayName, joinType, pictureUrl, withFriends },
+    userId,
   } = req.body
 
   // const {name, dueDate, detail, location: { link, text, latitude, longitude }, members: { going, maybe, invite },  } = req.body
@@ -24,19 +24,12 @@ const joinEvent = async (
 
   const { members = [] } = event
 
-  const findUser = members.find((member: any) => (member.userId === userId))
-  if (findUser) {
-    findUser.joinType = joinType
-    findUser.displayName = displayName
-    findUser.pictureUrl = pictureUrl
-    findUser.withFriends = withFriends
-  } else {
-    members.push({ userId, displayName, joinType, pictureUrl, withFriends })
-  }
+  const excludeUser = members.filter((member: any) => (member.userId !== userId))
+
 
   const updated = await collection.updateOne(
     { _id: new ObjectId(eventId) },
-    { $set: { members } }
+    { $set: { excludeUser } }
   )
 
   return res.json({ status: true, updated })
@@ -52,12 +45,11 @@ export default async function handler(
 
     const collection = db.collection(COLLECTION_NAME)
 
-    console.log(req.method)
     switch (req.method) {
       // case "GET":
       //     return list(req, res, collection)
       case "POST":
-        return joinEvent(req, res, collection)
+        return leaveEvent(req, res, collection)
       // case "PUT":
       //     return update(req, res, collection)
       // case "DELETE":
