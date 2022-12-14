@@ -11,7 +11,6 @@ export namespace LineService {
     messages: Message[]
   ): Promise<any> {
     const replyToken = _extractReplyToken(reqBody)
-    console.log("🚀 ~ file: line.ts:14 ~ replyToken", replyToken)
     return lineClient.replyMessage(replyToken, messages)
   }
 }
