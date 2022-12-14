@@ -13,7 +13,7 @@ export async function verifyLineSignature(request: NextRequest) {
 
   const key = await crypto.subtle.importKey(
     "raw",
-    encoder.encode(Configs.LINE.CHANNEL_SECRET),
+    encoder.encode(Configs.LINE_MESSAGING.CHANNEL_SECRET),
     algorithm,
     false,
     ["sign", "verify"]

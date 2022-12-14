@@ -1,0 +1,36 @@
+@media screen and (max-width: 767px) {
+  .text-field input {
+    font-size: 20px;
+  }
+}
+
+.text-field {
+  font-family: Kanit, sans-serif;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 16px;
+}
+
+.text-field label {
+  font-size: 16px;
+  color: grey;
+  font-weight: 600;
+}
+
+.text-field input {
+  display: inline-block;
+  font-family: Kanit, sans-serif;
+  font-size: 20px;
+  border: 0;
+  border-bottom: 1px solid gray;
+  padding: 8px 0;
+}
+.text-field input[type="date"] {
+  -webkit-appearance: none;
+}
+.text-field input:focus {
+  outline: none;
+  border-bottom: 2px solid #004bb0;
+  background-color: #92c1ff11;
+}
