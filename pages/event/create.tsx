@@ -3,6 +3,7 @@ import { DatePicker, TimePicker } from "@mui/x-date-pickers"
 import axios from "axios"
 import Error from "next/error"
 import Head from "next/head"
+import Image from "next/image"
 import { useState } from "react"
 import { RootProps } from "../_app"
 
@@ -11,7 +12,7 @@ export interface EventCreateProps extends RootProps {}
 export default function EventCreate({ profile }: EventCreateProps) {
   const [event, setEvent] = useState({
     name: "",
-    place: "",
+    location: "",
     date: null,
     startTime: null,
     endTime: null,
@@ -25,14 +26,20 @@ export default function EventCreate({ profile }: EventCreateProps) {
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     await axios.post("/api/event", {
-      hostUserId: profile?.userId,
+      host: {
+        userId: profile?.userId,
+        displayName: profile?.displayName,
+        pictureUrl: profile?.pictureUrl,
+      },
       groupId: profile?.groupId,
       name: event.name,
-      location: event.place,
+      location: event.location,
       date: event.date,
       startTime: event.startTime,
       endTime: event.endTime,
     })
+    const liff = (await import("@line/liff")).default
+    liff.closeWindow()
   }
 
   if (profile && !profile.groupId) {
@@ -40,85 +47,92 @@ export default function EventCreate({ profile }: EventCreateProps) {
   }
 
   return (
-    <>
-      <Head>
-        <title>SpreeGO | Create Event</title>
-      </Head>
-      <Container maxWidth="sm" style={{ marginTop: "16px" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} paddingBottom="8px">
-            <Typography variant="h4" color="#3371FF">
-              Create a new event
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Event name"
-              name="name"
-              value={event.name}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Place"
-              name="place"
-              value={event.place}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <DatePicker
-              label="Date"
-              value={event.date}
-              onChange={(newValue) => {
-                if (newValue) {
-                  setEvent({ ...event, date: newValue })
-                }
-              }}
-              renderInput={(params) => <TextField fullWidth {...params} />}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TimePicker
-              label="Start"
-              ampm={false}
-              value={event.startTime}
-              onChange={(newValue) => {
-                if (newValue) {
-                  setEvent({ ...event, startTime: newValue })
-                }
-              }}
-              renderInput={(params) => <TextField fullWidth {...params} />}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TimePicker
-              label="End"
-              ampm={false}
-              value={event.endTime}
-              onChange={(newValue) => {
-                if (newValue) {
-                  setEvent({ ...event, endTime: newValue })
-                }
-              }}
-              renderInput={(params) => <TextField fullWidth {...params} />}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              fullWidth
-              size="large"
-              variant="contained"
-              onClick={handleSubmit}
-            >
-              Submit
-            </Button>
-          </Grid>
+    <Container maxWidth="sm" style={{ marginTop: "16px" }}>
+      <Image
+        style={{ position: "absolute", top: 10, opacity: 0.15 }}
+        src="/ren-confetti.png"
+        width={350}
+        height={350}
+        alt="Ren Confetti image"
+      />
+      <Grid container spacing={2}>
+        <Grid item xs={12} paddingBottom="8px">
+          <Typography variant="h5" color="#3371FF">
+            Create a new event
+          </Typography>
         </Grid>
-      </Container>
-    </>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Event name"
+            name="name"
+            value={event.name}
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Location"
+            name="location"
+            value={event.location}
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <DatePicker
+            label="Date"
+            value={event.date}
+            onChange={(newValue) => {
+              if (newValue) {
+                setEvent({
+                  ...event,
+                  date: newValue,
+                  startTime: newValue,
+                  endTime: newValue,
+                })
+              }
+            }}
+            renderInput={(params) => <TextField fullWidth {...params} />}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TimePicker
+            label="Start"
+            ampm={false}
+            value={event.startTime}
+            onChange={(newValue) => {
+              if (newValue) {
+                setEvent({ ...event, startTime: newValue })
+              }
+            }}
+            renderInput={(params) => <TextField fullWidth {...params} />}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TimePicker
+            label="End"
+            ampm={false}
+            value={event.endTime}
+            onChange={(newValue) => {
+              if (newValue) {
+                setEvent({ ...event, endTime: newValue })
+              }
+            }}
+            renderInput={(params) => <TextField fullWidth {...params} />}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            fullWidth
+            size="large"
+            variant="contained"
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
+        </Grid>
+      </Grid>
+    </Container>
   )
 }

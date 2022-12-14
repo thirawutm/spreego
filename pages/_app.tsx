@@ -5,6 +5,7 @@ import Configs from "../config"
 import "../styles/globals.css"
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment"
 import { LocalizationProvider } from "@mui/x-date-pickers"
+import Head from 'next/head'
 
 export type Profile = {
   groupId?: string
@@ -43,9 +44,14 @@ export default function App({ Component, pageProps }: AppProps) {
 
   if (isInitLiffSuccess === true) {
     return (
-      <LocalizationProvider dateAdapter={AdapterMoment}>
-        <Component {...pageProps} profile={profile} />
-      </LocalizationProvider>
+      <>
+        <Head>
+          <title>SpreeGO</title>
+        </Head>
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+          <Component {...pageProps} profile={profile} />
+        </LocalizationProvider>
+      </>
     )
   } else if (isInitLiffSuccess === false) {
     return <Error statusCode={404} title="Only support on mobile" />
