@@ -24,7 +24,7 @@ const create = async (
 ) => {
 
   const created = await collection.insertOne(req.body)
-  SpreeGOService.announce({...req.body, eventId: created.insertedId.toString() })
+  await SpreeGOService.announce({...req.body, eventId: created.insertedId.toString() })
 
   return res.json({ status: true, created })
 }

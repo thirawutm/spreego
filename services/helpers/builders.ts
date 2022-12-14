@@ -33,7 +33,7 @@ export namespace FlexMessageBuilders {
         },
         {
           type: "image",
-          url: "https://614a-2001-fb1-98-f923-80d1-85d5-5a7-1a79.ap.ngrok.io/ren-confetti.png",
+          url: `${Configs.HOST}/ren-confetti.png`,
         },
       ],
     }
@@ -64,7 +64,7 @@ export namespace FlexMessageBuilders {
               action: {
                 type: "uri",
                 label: "ใส่รายละเอียดตี้ที่จะเปิด",
-                uri: "https://liff.line.me/1657735002-y6LEPx1J/event/create",
+                uri: `${Configs.LINE_LIFF.LIFF_URL}/event/create`,
               },
             },
           ],
@@ -103,7 +103,7 @@ export namespace FlexMessageBuilders {
         },
         {
           type: "image",
-          url: "https://614a-2001-fb1-98-f923-80d1-85d5-5a7-1a79.ap.ngrok.io/ren-confetti.png",
+          url: `${Configs.HOST}/ren-confetti.png`,
         },
       ],
     }

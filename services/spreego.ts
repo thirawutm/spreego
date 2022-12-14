@@ -161,7 +161,7 @@ export namespace SpreeGOService {
               },
               {
                 type: "image",
-                url: "https://614a-2001-fb1-98-f923-80d1-85d5-5a7-1a79.ap.ngrok.io/ren-confetti.png",
+                url: `${Configs.HOST}/ren-confetti.png`,
               },
             ],
           },
@@ -176,7 +176,7 @@ export namespace SpreeGOService {
                 contents: [
                   {
                     type: "icon",
-                    url: "https://ca.slack-edge.com/T3ZPZ7J7M-U027PPTSYHG-b86ca57759f4-512",
+                    url: reqBody.user.pictureUrl ?? `${Configs.HOST}/user-default.png`,
                     size: "xl",
                   },
                   {
@@ -251,7 +251,7 @@ export namespace SpreeGOService {
                   },
                   {
                     type: "image",
-                    url: "https://614a-2001-fb1-98-f923-80d1-85d5-5a7-1a79.ap.ngrok.io/ren-confetti.png",
+                    url: `${Configs.HOST}/ren-confetti.png`,
                   },
                 ],
               },
