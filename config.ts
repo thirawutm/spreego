@@ -1,4 +1,7 @@
 const Configs = {
+  HOST:
+    process.env.HOST ||
+    "https://614a-2001-fb1-98-f923-80d1-85d5-5a7-1a79.ap.ngrok.io",
   NODE_ENV: process.env.NODE_ENV || "development",
   LINE_MESSAGING: {
     ACCESS_TOKEN: process.env.LINE_MESSAGING_ACCESS_TOKEN || "",

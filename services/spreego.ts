@@ -1,4 +1,5 @@
 import { Message } from "@line/bot-sdk"
+import Configs from "../config"
 import { LineService } from "./line"
 
 export namespace SpreeGOService {
@@ -52,99 +53,46 @@ export namespace SpreeGOService {
     const messages: Message[] = [
       {
         type: "flex",
-        altText: "สวัสดี SpreePle, มีตี้ใหม่ สนใจป่าวว 🔥",
+        altText: "มาเลยครับ เดี๋ยวน้องเรนช่วยเปิดตี้ให้เอง",
         contents: {
           type: "bubble",
           header: {
             type: "box",
-            layout: "baseline",
+            layout: "horizontal",
+            backgroundColor: "#3371FF",
+            alignItems: "flex-end",
             contents: [
               {
                 type: "text",
-                text: "Basketball",
+                text: "#เปิดตี้",
                 weight: "bold",
                 size: "xxl",
-                color: "#3371FF",
+                color: "#FFFFFF",
+              },
+              {
+                type: "filler",
+              },
+              {
+                type: "image",
+                url: `${Configs.HOST}/ren-confetti.png`,
               },
             ],
           },
           body: {
             type: "box",
             layout: "vertical",
-            spacing: "sm",
+            spacing: "xl",
             contents: [
               {
-                type: "box",
-                layout: "horizontal",
-                spacing: "sm",
-                contents: [
-                  {
-                    type: "text",
-                    text: "Place",
-                    color: "#aaaaaa",
-                    size: "sm",
-                    flex: 1,
-                  },
-                  {
-                    type: "text",
-                    wrap: true,
-                    color: "#666666",
-                    size: "sm",
-                    flex: 4,
-                    contents: [],
-                    text: "The Street Ratchada,\nRatchadaphisek Rd, Din Daeng, Bangkok 10400" as unknown as undefined,
-                  },
-                ],
+                type: "text",
+                text: "มาเลยครับ เดี๋ยวน้องเรนช่วยเปิดตี้ให้เอง",
               },
               {
-                type: "box",
-                layout: "baseline",
-                spacing: "sm",
-                contents: [
-                  {
-                    type: "text",
-                    text: "Date",
-                    color: "#aaaaaa",
-                    size: "sm",
-                    flex: 1,
-                  },
-                  {
-                    type: "text",
-                    text: "Tuesday 20 Dec 2022",
-                    wrap: true,
-                    color: "#666666",
-                    size: "sm",
-                    flex: 4,
-                  },
-                ],
-              },
-              {
-                type: "box",
-                layout: "baseline",
-                spacing: "sm",
-                contents: [
-                  {
-                    type: "text",
-                    text: "Time",
-                    color: "#aaaaaa",
-                    size: "sm",
-                    flex: 1,
-                  },
-                  {
-                    type: "text",
-                    text: "20:00 - 22:00",
-                    wrap: true,
-                    color: "#666666",
-                    size: "sm",
-                    flex: 4,
-                  },
-                ],
+                type: "separator",
               },
               {
                 type: "box",
                 layout: "vertical",
-                margin: "xl",
-                spacing: "sm",
                 backgroundColor: "#3371FF",
                 cornerRadius: "md",
                 contents: [
@@ -153,30 +101,11 @@ export namespace SpreeGOService {
                     color: "#FFFFFF",
                     action: {
                       type: "uri",
-                      label: "Join",
-                      uri: "https://google.com",
+                      label: "ใส่รายละเอียดตี้ที่จะเปิด",
+                      uri: "https://liff.line.me/1657735002-y6LEPx1J/event/create",
                     },
                   },
                 ],
-              },
-              {
-                type: "box",
-                layout: "vertical",
-                spacing: "sm",
-                contents: [
-                  {
-                    type: "button",
-                    color: "#FF0000",
-                    action: {
-                      type: "uri",
-                      label: "Adjust Event",
-                      uri: "https://google.com",
-                    },
-                  },
-                ],
-              },
-              {
-                type: "separator",
               },
             ],
           },
