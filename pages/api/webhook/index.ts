@@ -1,4 +1,6 @@
+import axios from "axios"
 import type { NextApiRequest, NextApiResponse } from "next"
+import Configs from "../../../config"
 import { SpreeGOService } from "../../../services/spreego"
 
 type Data = {
@@ -13,8 +15,12 @@ async function messageController(reqBody: any): Promise<any> {
       return SpreeGOService.start(reqBody)
     case "#เปิดตี้":
       return SpreeGOService.setup(reqBody)
-    case "#ดูตี้ทั้งหมด":
-      return SpreeGOService.list(reqBody)
+    case "#ดูตี้ทั้งหมด": {
+      const events = await axios
+        .get(`${Configs.HOST}/api/event`)
+        .then((res) => res.data.events)
+      return SpreeGOService.list(reqBody, events)
+    }
     case "#testjoin":
       return SpreeGOService.join(reqBody)
     default:

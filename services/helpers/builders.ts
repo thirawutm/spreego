@@ -4,12 +4,12 @@ import moment from "moment"
 import Configs from "../../config"
 
 export const formatDate = (input: any) => {
-  if(!input) return ""
-  return moment(input).format("ddd D MMMM YYYY")
+  if (!input) return ""
+  return moment(input).format("ddd dd MMMM YYYY")
 }
 
 export const formatTime = (input: any) => {
-  if(!input) return ""
+  if (!input) return ""
   return moment(input).format("HH:mm")
 }
 
@@ -223,29 +223,35 @@ export namespace FlexMessageBuilders {
   }
 
   function buildJoiners(members: Members[] = []): FlexBox {
-    const joiners = members.reduce(
-      (acc: { left: FlexComponent[]; right: FlexComponent[] }, member, idx) => {
-        const joinerFlex: FlexComponent = {
-          type: "box",
-          layout: "baseline",
-          contents: [
-            {
-              type: "icon",
-              url: `${member.pictureUrl}`,
-            },
-            {
-              type: "text",
-              text: `${member.displayName}`,
-              size: "xs",
-              margin: "sm",
-            },
-          ],
-        }
-        idx % 2 === 0 ? acc.left.push(joinerFlex) : acc.right.push(joinerFlex)
-        return acc
-      },
-      { left: [], right: [] }
-    )
+    const joiners = members
+      .filter((fil) => fil.joinType === "going")
+      .reduce(
+        (
+          acc: { left: FlexComponent[]; right: FlexComponent[] },
+          member,
+          idx
+        ) => {
+          const joinerFlex: FlexComponent = {
+            type: "box",
+            layout: "baseline",
+            contents: [
+              {
+                type: "icon",
+                url: `${member.pictureUrl}`,
+              },
+              {
+                type: "text",
+                text: `${member.displayName}`,
+                size: "xs",
+                margin: "sm",
+              },
+            ],
+          }
+          idx % 2 === 0 ? acc.left.push(joinerFlex) : acc.right.push(joinerFlex)
+          return acc
+        },
+        { left: [], right: [] }
+      )
     return {
       type: "box",
       layout: "horizontal",
