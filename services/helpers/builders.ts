@@ -462,7 +462,7 @@ export namespace FlexMessageBuilders {
               },
               {
                 type: "text",
-                text: `${member.displayName}`,
+                text: `${member.displayName}+${member.withFriends}`,
                 size: "xs",
                 margin: "sm",
               },
@@ -535,7 +535,7 @@ export namespace FlexMessageBuilders {
               },
               {
                 type: "text",
-                text: `${member.displayName}`,
+                text: `${member.displayName}+${member.withFriends}`,
                 size: "xs",
                 margin: "sm",
               },
