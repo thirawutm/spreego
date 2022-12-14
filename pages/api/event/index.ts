@@ -3,6 +3,7 @@ import clientPromise from "../../../lib/mongodb"
 import type { NextApiRequest, NextApiResponse } from "next"
 import Constants from "../../../constants"
 import { Document, ObjectId } from "mongodb"
+import { SpreeGOService } from "../../../services/spreego"
 
 const COLLECTION_NAME = "events"
 
@@ -24,6 +25,7 @@ const create = async (
   // const {name, dueDate, detail, location: { link, text, latitude, longitude }, members: { going, maybe, invite },  } = req.body
 
   const created = await collection.insert(req.body)
+  SpreeGOService.announce(req.body)
 
   return res.json({ status: true, created })
 }
