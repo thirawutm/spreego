@@ -32,7 +32,7 @@ export default function EventCreate({ profile }: EventCreateProps) {
       },
       groupId: profile?.groupId,
       name: event.name,
-      location: event.location,
+      location: {text: event.location} ,
       date: event.date,
       startTime: event.startTime,
       endTime: event.endTime,

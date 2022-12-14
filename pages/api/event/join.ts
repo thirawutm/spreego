@@ -39,7 +39,7 @@ const joinEvent = async (
     { $set: { members } }
   )
 
-  SpreeGOService.join({ ...req.body, eventId: event._id.toString(), groupId: event.groupId, members: members })
+  await SpreeGOService.join({ ...req.body, eventId: event._id.toString(), groupId: event.groupId, members: members })
 
   return res.json({ status: true, updated })
 }
