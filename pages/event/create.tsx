@@ -1,4 +1,4 @@
-import { Button, Container, Grid, TextField, Typography } from "@mui/material"
+import { Button, CircularProgress, Container, Grid, TextField, Typography } from "@mui/material"
 import { DatePicker, TimePicker } from "@mui/x-date-pickers"
 import axios from "axios"
 import Error from "next/error"
@@ -6,9 +6,10 @@ import Image from "next/image"
 import { useState } from "react"
 import { RootProps } from "../_app"
 
-export interface EventCreateProps extends RootProps {}
+export interface CreateEventProps extends RootProps {}
 
-export default function EventCreate({ profile }: EventCreateProps) {
+export default function CreateEvent({ profile }: CreateEventProps) {
+  const [isLoading, setIsLoading] = useState(false)
   const [event, setEvent] = useState({
     name: "",
     location: "",
@@ -24,6 +25,7 @@ export default function EventCreate({ profile }: EventCreateProps) {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
+    setIsLoading(true)
     await axios.post("/api/event", {
       host: {
         userId: profile?.userId,
@@ -32,23 +34,44 @@ export default function EventCreate({ profile }: EventCreateProps) {
       },
       groupId: profile?.groupId,
       name: event.name,
-      location: {text: event.location} ,
+      location: {
+        text: event.location,
+      },
       date: event.date,
       startTime: event.startTime,
       endTime: event.endTime,
     })
     const liff = (await import("@line/liff")).default
     liff.closeWindow()
+    setIsLoading(false)
   }
 
   if (profile && !profile.groupId) {
     return <Error statusCode={400} title="Group ID is required" />
   }
 
+  if (isLoading) {
+    return (
+      <Container
+        maxWidth="sm"
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </Container>
+    )
+  }
+
   return (
     <Container maxWidth="sm" style={{ marginTop: "16px" }}>
       <Image
-        style={{ position: "absolute", top: 10, opacity: 0.15 }}
+        className="image"
+        style={{ zIndex: -10, position: "absolute", top: 10, opacity: 0.15 }}
         src="/ren-confetti.png"
         width={350}
         height={350}

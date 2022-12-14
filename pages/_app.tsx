@@ -6,6 +6,8 @@ import "../styles/globals.css"
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment"
 import { LocalizationProvider } from "@mui/x-date-pickers"
 import Head from 'next/head'
+import { Container } from '@mui/system'
+import { CircularProgress } from '@mui/material'
 
 export type Profile = {
   groupId?: string
@@ -56,4 +58,18 @@ export default function App({ Component, pageProps }: AppProps) {
   } else if (isInitLiffSuccess === false) {
     return <Error statusCode={404} title="Only support on mobile" />
   }
+  return (
+    <Container
+        maxWidth="sm"
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </Container>
+  )
 }
