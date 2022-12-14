@@ -99,20 +99,6 @@ export default function EventDetails({ profile }: EventDetailsProps) {
     setIsLoading(false)
   }
 
-  const handleLeave = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
-    if (event && profile) {
-      await axios.post("/api/event/leave", {
-        userId: profile.userId,
-        eventId: event._id,
-      })
-      const liff = (await import("@line/liff")).default
-      liff.closeWindow()
-    }
-    setIsLoading(false)
-  }
-
   if (isLoading) {
     return (
       <Container
@@ -242,6 +228,16 @@ export default function EventDetails({ profile }: EventDetailsProps) {
           <Grid item xs={12}>
             <Button
               fullWidth
+              size="large"
+              variant="outlined"
+              onClick={handleJoin}
+            >
+              Edit Join
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              fullWidth
               size="small"
               variant="text"
               color="error"
@@ -276,7 +272,7 @@ export default function EventDetails({ profile }: EventDetailsProps) {
               {event.name}
             </Typography>
             <Typography variant="body1" color="white">
-              Host{" "}
+              By{" "}
               <span style={{ fontWeight: "bold", fontSize: "16px" }}>
                 @{event.host.displayName}
               </span>
@@ -347,31 +343,19 @@ export default function EventDetails({ profile }: EventDetailsProps) {
               Share
             </Button>
           </Grid> */}
-          {event.members.find((member) => member.userId === profile.userId)
-            ?.joinType === "going" ? (
-            <Grid item xs={12} marginTop="16px">
-              <Button
-                fullWidth
-                size="large"
-                variant="contained"
-                color="error"
-                onClick={handleLeave}
-              >
-                Leave Event
-              </Button>
-            </Grid>
-          ) : (
-            <Grid item xs={12} marginTop="16px">
-              <Button
-                fullWidth
-                size="large"
-                variant="contained"
-                onClick={handleJoin}
-              >
-                Join Event
-              </Button>
-            </Grid>
-          )}
+          <Grid item xs={12} marginTop="16px">
+            <Button
+              fullWidth
+              size="large"
+              variant="contained"
+              onClick={handleJoin}
+            >
+              {event.members.find((member) => member.userId === profile.userId)
+                ?.joinType === "going"
+                ? "Edit Join"
+                : "Join Event"}
+            </Button>
+          </Grid>
         </Grid>
       </Container>
     )
