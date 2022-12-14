@@ -22,18 +22,30 @@ export namespace FlexMessageBuilders {
       alignItems: "flex-end",
       contents: [
         {
-          type: "text",
-          text: "#เปิดตี้",
-          weight: "bold",
-          size: "xxl",
-          color: "#FFFFFF",
-        },
-        {
-          type: "filler",
+          type: "box",
+          layout: "vertical",
+          flex: 2,
+          contents: [
+            {
+              type: "text",
+              text: "Create",
+              weight: "regular",
+              size: "xl",
+              color: "#FFFFFF",
+            },
+            {
+              type: "text",
+              text: "Event 🎉",
+              weight: "bold",
+              size: "xxl",
+              color: "#FFFFFF",
+            },
+          ],
         },
         {
           type: "image",
           url: `${Configs.HOST}/ren-confetti.png`,
+          flex: 1,
         },
       ],
     }
@@ -114,8 +126,10 @@ export namespace FlexMessageBuilders {
         {
           type: "separator",
         },
-        buildJoinerCount(members),
+        buildJoinerCount(members, true),
         buildJoiners(members),
+        buildDeserterCount(members, true),
+        buildDeserters(members),
       ],
     }
   }
@@ -123,6 +137,7 @@ export namespace FlexMessageBuilders {
   export function buildListHeader(
     name: string,
     host: Host,
+    eventId: string,
     backgroundColor: string = "#3371FF"
   ): FlexBox {
     return {
@@ -131,6 +146,11 @@ export namespace FlexMessageBuilders {
       backgroundColor,
       alignItems: "flex-end",
       spacing: "sm",
+      action: {
+        type: "uri",
+        label: "More Details",
+        uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${eventId}`,
+      },
       contents: [
         {
           type: "box",
@@ -249,20 +269,22 @@ export namespace FlexMessageBuilders {
             uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${eventId}/join`,
           },
         },
-        {
-          type: "button",
-          color: "#333333",
-          action: {
-            type: "uri",
-            label: "More Detail",
-            uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${eventId}`,
-          },
-        },
+        // {
+        //   type: "button",
+        //   color: "#333333",
+        //   action: {
+        //     type: "uri",
+        //     label: "More Detail",
+        //     uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${eventId}`,
+        //   },
+        // },
         {
           type: "separator",
         },
         buildJoinerCount(members),
         buildJoiners(members),
+        buildDeserterCount(members),
+        buildDeserters(members),
       ],
     }
   }
@@ -348,7 +370,7 @@ export namespace FlexMessageBuilders {
         {
           type: "separator",
         },
-        buildJoinerCount(members),
+        buildJoinerCount(members, true),
         buildJoiners(members),
       ],
     }
@@ -402,7 +424,10 @@ export namespace FlexMessageBuilders {
     }
   }
 
-  export function buildJoinerCount(members: Members[] = []): any {
+  export function buildJoinerCount(
+    members: Members[] = [],
+    isSummary: boolean = false
+  ): FlexComponent {
     const memberGoing = members.filter((member) => member.joinType === "going")
     const totalJoin = memberGoing.reduce((total: number, member) => {
       return (total +=
@@ -411,7 +436,9 @@ export namespace FlexMessageBuilders {
 
     return {
       type: "text",
-      text: `${totalJoin} people are joining`,
+      text: `${totalJoin} ${
+        isSummary ? "people has joined" : "people are joining"
+      }`,
       size: "sm",
       color: "#aaaaaa",
     }
@@ -419,6 +446,79 @@ export namespace FlexMessageBuilders {
   function buildJoiners(members: Members[] = []): FlexBox {
     const joiners = members
       .filter((fil) => fil.joinType === "going")
+      .reduce(
+        (
+          acc: { left: FlexComponent[]; right: FlexComponent[] },
+          member,
+          idx
+        ) => {
+          const joinerFlex: FlexComponent = {
+            type: "box",
+            layout: "baseline",
+            contents: [
+              {
+                type: "icon",
+                url: `${member.pictureUrl}`,
+              },
+              {
+                type: "text",
+                text: `${member.displayName}`,
+                size: "xs",
+                margin: "sm",
+              },
+            ],
+          }
+          idx % 2 === 0 ? acc.left.push(joinerFlex) : acc.right.push(joinerFlex)
+          return acc
+        },
+        { left: [], right: [] }
+      )
+    return {
+      type: "box",
+      layout: "horizontal",
+      spacing: "sm",
+      contents: [
+        {
+          type: "box",
+          layout: "vertical",
+          spacing: "xl",
+          flex: 2,
+          contents: joiners.left,
+        },
+        {
+          type: "box",
+          layout: "vertical",
+          spacing: "xl",
+          flex: 2,
+          contents: joiners.right,
+        },
+      ],
+    }
+  }
+
+  export function buildDeserterCount(
+    members: Members[] = [],
+    isSummary: boolean = false
+  ): FlexComponent {
+    const deserters = members.filter((member) => member.joinType === "decline")
+    const totalDecline = deserters.reduce((total: number, member) => {
+      return (total +=
+        1 + (parseInt(member.withFriends?.toString() ?? "0") ?? 0))
+    }, 0)
+
+    return {
+      type: "text",
+      text: `${totalDecline} ${
+        isSummary ? "people have declined" : "people are declining"
+      }`,
+      size: "sm",
+      weight: "bold",
+      color: "#aaaaaa",
+    }
+  }
+  function buildDeserters(members: Members[] = []): FlexBox {
+    const joiners = members
+      .filter((fil) => fil.joinType === "decline")
       .reduce(
         (
           acc: { left: FlexComponent[]; right: FlexComponent[] },

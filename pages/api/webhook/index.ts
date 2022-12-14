@@ -12,14 +12,21 @@ async function messageController(reqBody: any): Promise<any> {
   const cmd = reqBody.events[0].message.text
   switch (cmd.toLowerCase()) {
     case "spreego":
+    case "gogo":
       return SpreeGOService.start(reqBody)
-    case "#เปิดตี้":
+    case "#createevent":
       return SpreeGOService.setup(reqBody)
-    case "#ดูตี้ทั้งหมด": {
+    case "#eventlist": {
       const events = await axios
         .get(`${Configs.HOST}/api/event`)
         .then((res) => res.data.events)
       return SpreeGOService.list(reqBody, events)
+    }
+    case "#test": {
+      const events = await axios
+        .get(`${Configs.HOST}/api/event`)
+        .then((res) => res.data.events)
+      return SpreeGOService.summary(events)
     }
     default:
       return null

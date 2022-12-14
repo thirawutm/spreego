@@ -16,7 +16,7 @@ export namespace SpreeGOService {
               type: "action",
               action: {
                 type: "uri",
-                label: "เปิดตี้",
+                label: "Create Event",
                 uri: `${Configs.LINE_LIFF.LIFF_URL}/event/create`,
               },
             },
@@ -24,8 +24,8 @@ export namespace SpreeGOService {
               type: "action",
               action: {
                 type: "message",
-                label: "ดูตี้ทั้งหมด",
-                text: "#ดูตี้ทั้งหมด",
+                label: "Event List",
+                text: "#eventlist",
               },
             },
           ],
@@ -44,9 +44,9 @@ export namespace SpreeGOService {
           type: "bubble",
           header: FlexMessageBuilders.buildSetupHeader(),
           body: FlexMessageBuilders.buildSetupBody(
-            "มาเลยครับ เดี๋ยวน้องเรนช่วยเปิดตี้ให้เอง",
+            "Let me help you find more people!",
             {
-              label: "ใส่รายละเอียดตี้ที่จะเปิด",
+              label: "What do you want to do?",
               uri: `${Configs.LINE_LIFF.LIFF_URL}/event/create`,
             }
           ),
@@ -90,7 +90,7 @@ export namespace SpreeGOService {
         altText: "มาเข้าตี้ซะดีๆ SpreePle",
         contents: {
           type: "bubble",
-          header: FlexMessageBuilders.buildListHeader(name, host),
+          header: FlexMessageBuilders.buildListHeader(name, host, eventId),
           body: FlexMessageBuilders.buildListBody(
             location,
             date,
@@ -114,7 +114,8 @@ export namespace SpreeGOService {
           type: "bubble",
           header: FlexMessageBuilders.buildListHeader(
             reqBody.name,
-            reqBody.host
+            reqBody.host,
+            reqBody.eventId
           ),
           body: {
             type: "box",
@@ -220,7 +221,11 @@ export namespace SpreeGOService {
     const contents: any[] = events
       .map((event: Events) => ({
         type: "bubble",
-        header: FlexMessageBuilders.buildListHeader(event.name, event.host),
+        header: FlexMessageBuilders.buildListHeader(
+          event.name,
+          event.host,
+          reqBody.eventId
+        ),
         body: FlexMessageBuilders.buildListBody(
           event.location,
           event.date,
@@ -257,9 +262,9 @@ export namespace SpreeGOService {
               event
             ),
             body: FlexMessageBuilders.buildSetupBodyWithJoiners(
-              `อย่าลืมจ่ายเงิน @${event.host.displayName} :)`,
+              `don't forget to pay @${event.host.displayName} :)`,
               {
-                label: "คำนวณเงิน",
+                label: "Calculate",
                 uri: `${Configs.LINE_LIFF.LIFF_URL}/event/calculate`,
               },
               event.members
