@@ -41,7 +41,7 @@ export default function JoinEvent({ profile }: JoinEventProps) {
     // alert(profile.userId)
     
     if(event && event.members) {
-      const findCurrentUser = event.members.find(member => member.userId === joiner.userId)
+      const findCurrentUser = event.members.find((member: { userId: string }) => member.userId === joiner.userId)
       
       if(findCurrentUser) {
         setIsJoin(findCurrentUser.joinType==='going')
