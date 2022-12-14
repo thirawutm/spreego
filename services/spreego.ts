@@ -189,7 +189,7 @@ export namespace SpreeGOService {
         },
       },
     ]
-    return LineService.replyMessage(reqBody, messages)
+    return LineService.pushMessage(reqBody, messages)
   }
 
   export function list(reqBody: any): Promise<any> {
