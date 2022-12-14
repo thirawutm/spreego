@@ -20,6 +20,7 @@ export default function JoinEvent({ profile }: JoinEventProps) {
     withFriends: 0,
   })
   const [isJoin, setIsJoin] = useState(false)
+  const [withFriends, setWithFriends] = useState(0)
   const router = useRouter()
 
   useEffect(() => {
@@ -45,8 +46,8 @@ export default function JoinEvent({ profile }: JoinEventProps) {
       
       if(findCurrentUser) {
         setIsJoin(findCurrentUser.joinType==='going')
-        if(findCurrentUser.withFriends) {
-          setJoiner({...joiner, withFriends: findCurrentUser.withFriends})
+        if(findCurrentUser.withFriends && findCurrentUser.withFriends > 0) {
+          setWithFriends(findCurrentUser.withFriends)
         }
       }
       
@@ -61,7 +62,7 @@ export default function JoinEvent({ profile }: JoinEventProps) {
         userId: joiner.userId,
         displayName: joiner.displayName,
         pictureUrl: joiner.pictureUrl,
-        withFriends: joiner.withFriends,
+        withFriends: withFriends,
         joinType: "going",
       },
     })
@@ -79,16 +80,19 @@ export default function JoinEvent({ profile }: JoinEventProps) {
   }
 
   const handleIncrease = () => {
-    setJoiner({
-      ...joiner,
-      withFriends: joiner.withFriends + 1,
-    })
+    setWithFriends(withFriends+1)
+    // setJoiner({
+    //   ...joiner,
+    //   withFriends: joiner.withFriends + 1,
+    // })
   }
   const handleDecrease = () => {
-    setJoiner({
-      ...joiner,
-      withFriends: joiner.withFriends - 1,
-    })
+    const newWithFriends = withFriends-1
+    setWithFriends(newWithFriends<0 ? 0 : newWithFriends)
+    // setJoiner({
+    //   ...joiner,
+    //   withFriends: joiner.withFriends - 1,
+    // })
   }
 
   return (
@@ -156,13 +160,13 @@ export default function JoinEvent({ profile }: JoinEventProps) {
               fontSize: "20px",
               fontWeight: "bold",
             }}
-            disabled={joiner.withFriends === 0}
+            disabled={withFriends === 0}
             onClick={handleDecrease}
           >
             -
           </Button>
           <Typography variant="body1" padding="16px 32px" color="#3371FF">
-            {joiner.withFriends}
+            {withFriends}
           </Typography>
           <Button
             variant="outlined"

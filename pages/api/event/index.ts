@@ -23,7 +23,7 @@ const create = async (
   collection: Document
 ) => {
   const {host} = req.body
-  const doc = {...req.body, members: [{...host, withFriends: 0 }], status: true }
+  const doc = {...req.body, members: [{...host, joinType: 'going', withFriends: 0 }], status: true }
 
   const created = await collection.insertOne(doc)
   await SpreeGOService.announce({...doc, eventId: created.insertedId.toString() })
