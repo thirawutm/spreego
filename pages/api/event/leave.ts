@@ -24,12 +24,14 @@ const leaveEvent = async (
 
   const { members = [] } = event
 
-  const excludeUser = members.filter((member: any) => (member.userId !== userId))
-
+  const findUser = members.find((member: any) => (member.userId === userId))
+  if (findUser) {
+    findUser.joinType = "decline"
+  }
 
   const updated = await collection.updateOne(
     { _id: new ObjectId(eventId) },
-    { $set: { members: excludeUser } }
+    { $set: { members } }
   )
 
   return res.json({ status: true, updated })
