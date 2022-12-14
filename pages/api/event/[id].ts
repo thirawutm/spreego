@@ -3,6 +3,7 @@ import clientPromise from "../../../lib/mongodb"
 import type { NextApiRequest, NextApiResponse } from "next"
 import Constants from "../../../constants"
 import { Document, ObjectId } from "mongodb"
+import { SpreeGOService } from "../../../services/spreego"
 
 const COLLECTION_NAME = "events"
 
@@ -33,12 +34,18 @@ const deleteEvent = async (
     return res.status(400).json({ status: false, message: "id must be string" })
   }
 
+  const event = await collection.findOne({ _id: new ObjectId(id) })
+
+  if (!event)
+    res.status(404).json({ status: false, message: "Event is not found" })
+
   const updated = await collection.updateOne(
     { _id: new ObjectId(id) },
     { $set: { status: false } }
   )
 
   // const deleted = await collection.deleteOne({ _id: new ObjectId(id) })
+  await SpreeGOService.destroy(event)
 
   return res.json({ status: true, deleted: updated })
 }
