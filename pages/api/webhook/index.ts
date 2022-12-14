@@ -37,7 +37,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ): Promise<void> {
-  const messageType = req.body.events[0].type
+  const messageType = req.body.events[0]?.type || "undefined"
 
   try {
     switch (messageType) {
