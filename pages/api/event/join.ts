@@ -16,7 +16,6 @@ const joinEvent = async (
     user: { userId, displayName, joinType, pictureUrl, withFriends },
   } = req.body
 
-  // const {name, dueDate, detail, location: { link, text, latitude, longitude }, members: { going, maybe, invite },  } = req.body
   const event = await collection.findOne({ _id: new ObjectId(eventId) })
 
   if (!event)

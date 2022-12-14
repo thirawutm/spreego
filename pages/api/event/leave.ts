@@ -29,7 +29,7 @@ const leaveEvent = async (
 
   const updated = await collection.updateOne(
     { _id: new ObjectId(eventId) },
-    { $set: { excludeUser } }
+    { $set: { members: excludeUser } }
   )
 
   return res.json({ status: true, updated })
