@@ -2,7 +2,6 @@ import { Button, Container, Grid, TextField, Typography } from "@mui/material"
 import { DatePicker, TimePicker } from "@mui/x-date-pickers"
 import axios from "axios"
 import Error from "next/error"
-import Head from "next/head"
 import Image from "next/image"
 import { useState } from "react"
 import { RootProps } from "../_app"
@@ -128,6 +127,13 @@ export default function EventCreate({ profile }: EventCreateProps) {
             size="large"
             variant="contained"
             onClick={handleSubmit}
+            disabled={
+              !event.name ||
+              !event.location ||
+              !event.date ||
+              !event.startTime ||
+              !event.endTime
+            }
           >
             Submit
           </Button>
