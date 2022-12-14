@@ -1,4 +1,4 @@
-import { FlexBubble, Message } from "@line/bot-sdk"
+import { Message } from "@line/bot-sdk"
 import Configs from "../config"
 import { Events } from "../interfaces"
 import { FlexMessageBuilders } from "./helpers/builders"
@@ -54,6 +54,31 @@ export namespace SpreeGOService {
       },
     ]
     return LineService.replyMessage(reqBody, messages)
+  }
+
+  export function destroy(reqBody: any): Promise<any> {
+    const messages: Message[] = [
+      {
+        type: "flex",
+        altText: "ไม่นะพี่ๆ มีตี้ล่มม~",
+        contents: {
+          type: "bubble",
+          header: FlexMessageBuilders.buildSummaryHeader(
+            "Event Canceled 😭",
+            reqBody,
+            "#E0a38e"
+          ),
+          body: FlexMessageBuilders.buildListBodyWithoutButton(
+            reqBody.location,
+            reqBody.date,
+            reqBody.startTime,
+            reqBody.endTime,
+            reqBody.members
+          ),
+        },
+      },
+    ]
+    return LineService.pushMessage(reqBody, messages)
   }
 
   export function announce(reqBody: Events): Promise<any> {
@@ -226,46 +251,10 @@ export namespace SpreeGOService {
         altText: `ตี้ ${event.name} สำเร็จลุล่วงแล้วว`,
         contents: {
           type: "bubble",
-          header: {
-            type: "box",
-            layout: "horizontal",
-            backgroundColor: "#3371FF",
-            alignItems: "flex-end",
-            spacing: "sm",
-            contents: [
-              {
-                type: "box",
-                layout: "vertical",
-                spacing: "sm",
-                flex: 2,
-                contents: [
-                  {
-                    type: "text",
-                    text: "🎉 WE DID IT 🎉",
-                    weight: "bold",
-                    size: "lg",
-                    color: "#FFFFFF",
-                  },
-                  {
-                    type: "text",
-                    text: `${event.name}`,
-                    size: "lg",
-                    color: "#FFFFFF",
-                  },
-                  {
-                    type: "text",
-                    text: `by ${event.host.displayName}`,
-                    size: "sm",
-                    color: "#EEEEEE",
-                  },
-                ],
-              },
-              {
-                type: "image",
-                url: `${Configs.HOST}/ren-confetti.png`,
-              },
-            ],
-          },
+          header: FlexMessageBuilders.buildSummaryHeader(
+            "🎉 WE DID IT 🎉",
+            event
+          ),
           body: FlexMessageBuilders.buildSetupBodyWithJoiners(
             `อย่าลืมจ่ายเงิน @${event.host.displayName} :)`,
             {
