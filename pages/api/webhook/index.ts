@@ -21,12 +21,6 @@ async function messageController(reqBody: any): Promise<any> {
         .then((res) => res.data.events)
       return SpreeGOService.list(reqBody, events)
     }
-    case "#testsummary": {
-      const events = await axios
-        .get(`${Configs.HOST}/api/event`)
-        .then((res) => res.data.events)
-      return SpreeGOService.summary(reqBody, events)
-    }
     default:
       return null
   }
@@ -56,6 +50,8 @@ export default async function handler(
     const errorMessage = error.message || error.statusMessage
 
     console.log(errorMessage)
+    console.log(error)
+
     await SpreeGOService.error(req.body)
 
     res.status(errorCode).json({ name: "Webhook", error: errorMessage })

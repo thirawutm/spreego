@@ -156,7 +156,7 @@ export namespace SpreeGOService {
               {
                 type: "separator",
               },
-              FlexMessageBuilders.buildJoinerCount(reqBody.members)
+              FlexMessageBuilders.buildJoinerCount(reqBody.members),
             ],
           },
         },
@@ -207,7 +207,7 @@ export namespace SpreeGOService {
               {
                 type: "separator",
               },
-              FlexMessageBuilders.buildJoinerCount(reqBody.members)
+              FlexMessageBuilders.buildJoinerCount(reqBody.members),
             ],
           },
         },
@@ -244,29 +244,31 @@ export namespace SpreeGOService {
     return LineService.replyMessage(reqBody, messages)
   }
 
-  export function summary(reqBody: any, events: Events[]): Promise<any> {
-    const messages: Message[] = events.map(
-      (event: Events): Message => ({
-        type: "flex",
-        altText: `ตี้ ${event.name} สำเร็จลุล่วงแล้วว`,
-        contents: {
-          type: "bubble",
-          header: FlexMessageBuilders.buildSummaryHeader(
-            "🎉 WE DID IT 🎉",
-            event
-          ),
-          body: FlexMessageBuilders.buildSetupBodyWithJoiners(
-            `อย่าลืมจ่ายเงิน @${event.host.displayName} :)`,
-            {
-              label: "คำนวณเงิน",
-              uri: `${Configs.LINE_LIFF.LIFF_URL}/event/calculate`,
-            },
-            event.members
-          ),
-        },
+  export async function summary(events: Events[]): Promise<any> {
+    await Promise.all(
+      events.map(async (event: Events) => {
+        const message: Message = {
+          type: "flex",
+          altText: `ตี้ ${event.name} สำเร็จลุล่วงแล้วว`,
+          contents: {
+            type: "bubble",
+            header: FlexMessageBuilders.buildSummaryHeader(
+              "🎉 WE DID IT 🎉",
+              event
+            ),
+            body: FlexMessageBuilders.buildSetupBodyWithJoiners(
+              `อย่าลืมจ่ายเงิน @${event.host.displayName} :)`,
+              {
+                label: "คำนวณเงิน",
+                uri: `${Configs.LINE_LIFF.LIFF_URL}/event/calculate`,
+              },
+              event.members
+            ),
+          },
+        }
+        return LineService.pushMessage({ groupId: event.groupId }, [message])
       })
     )
-    return LineService.replyMessage(reqBody, [messages[0]])
   }
 
   export function error(reqBody: any): Promise<any> {
