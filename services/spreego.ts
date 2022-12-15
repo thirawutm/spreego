@@ -170,73 +170,6 @@ export namespace SpreeGOService {
                 ],
               },
               {
-                type: "box",
-                layout: "horizontal",
-                spacing: "sm",
-                contents: [
-                  {
-                    type: "text",
-                    text: "Location",
-                    color: "#aaaaaa",
-                    size: "sm",
-                    flex: 3,
-                  },
-                  {
-                    type: "text",
-                    wrap: true,
-                    color: "#666666",
-                    size: "sm",
-                    flex: 11,
-                    contents: [],
-                    text: `${reqBody.location.text}` as unknown as undefined,
-                  },
-                ],
-              },
-              {
-                type: "box",
-                layout: "baseline",
-                spacing: "sm",
-                contents: [
-                  {
-                    type: "text",
-                    text: "Date",
-                    color: "#aaaaaa",
-                    size: "sm",
-                    flex: 3,
-                  },
-                  {
-                    type: "text",
-                    text: `${formatDate(reqBody.date)}`,
-                    wrap: true,
-                    color: "#666666",
-                    size: "sm",
-                    flex: 11,
-                  },
-                ],
-              },
-              {
-                type: "box",
-                layout: "baseline",
-                spacing: "sm",
-                contents: [
-                  {
-                    type: "text",
-                    text: "Time",
-                    color: "#aaaaaa",
-                    size: "sm",
-                    flex: 3,
-                  },
-                  {
-                    type: "text",
-                    text: `${formatTime(reqBody.startTime)} - ${formatTime(reqBody.endTime)}`,
-                    wrap: true,
-                    color: "#666666",
-                    size: "sm",
-                    flex: 11,
-                  },
-                ],
-              },
-              {
                 type: "button",
                 style: "primary",
                 color: "#3371FF",
@@ -258,6 +191,74 @@ export namespace SpreeGOService {
     ]
     return LineService.pushMessage(reqBody, messages)
   }
+
+  // {
+  //   type: "box",
+  //   layout: "horizontal",
+  //   spacing: "sm",
+  //   contents: [
+  //     {
+  //       type: "text",
+  //       text: "Location",
+  //       color: "#aaaaaa",
+  //       size: "sm",
+  //       flex: 3,
+  //     },
+  //     {
+  //       type: "text",
+  //       wrap: true,
+  //       color: "#666666",
+  //       size: "sm",
+  //       flex: 11,
+  //       contents: [],
+  //       text: `${reqBody.location.text}` as unknown as undefined,
+  //     },
+  //   ],
+  // },
+  // {
+  //   type: "box",
+  //   layout: "baseline",
+  //   spacing: "sm",
+  //   contents: [
+  //     {
+  //       type: "text",
+  //       text: "Date",
+  //       color: "#aaaaaa",
+  //       size: "sm",
+  //       flex: 3,
+  //     },
+  //     {
+  //       type: "text",
+  //       text: `${formatDate(reqBody.date)}`,
+  //       wrap: true,
+  //       color: "#666666",
+  //       size: "sm",
+  //       flex: 11,
+  //     },
+  //   ],
+  // },
+  // {
+  //   type: "box",
+  //   layout: "baseline",
+  //   spacing: "sm",
+  //   contents: [
+  //     {
+  //       type: "text",
+  //       text: "Time",
+  //       color: "#aaaaaa",
+  //       size: "sm",
+  //       flex: 3,
+  //     },
+  //     {
+  //       type: "text",
+  //       text: `${formatTime(reqBody.startTime)} - ${formatTime(reqBody.endTime)}`,
+  //       wrap: true,
+  //       color: "#666666",
+  //       size: "sm",
+  //       flex: 11,
+  //     },
+  //   ],
+  // },
 
   export function leave(reqBody: any): Promise<any> {
     const messages: Message[] = [
