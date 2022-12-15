@@ -9,7 +9,7 @@ type Data = {
 }
 
 async function messageController(reqBody: any): Promise<any> {
-  const cmd = reqBody.events[0].message.text
+  const cmd = reqBody?.events[0]?.message?.text || "undefined"
   switch (cmd.toLowerCase()) {
     case "spreego":
     case "gogo":
@@ -31,7 +31,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ): Promise<void> {
-  const messageType = req.body.events[0]?.type || "undefined"
+  const messageType = req?.body?.events[0]?.type || "undefined"
 
   try {
     switch (messageType) {
