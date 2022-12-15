@@ -5,6 +5,7 @@ import Constants from "../../../constants"
 import { Document, ObjectId } from "mongodb"
 import { SpreeGOService } from "../../../services/spreego"
 import moment from "moment"
+import Configs from "../../../config"
 
 const COLLECTION_NAME = "events"
 
@@ -15,7 +16,7 @@ const notifyEvents = async (
 ) => {
 
   const hours = -4
-    const checkNoti = moment().add(hours, 'hours')
+    const checkNoti = moment().add(Configs.NOTIFY_EVERY_MINS ?? 240, 'minutes')
 
     const aggregated = [ {
       $addFields: {
