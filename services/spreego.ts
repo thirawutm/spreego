@@ -1,7 +1,7 @@
 import { Message } from "@line/bot-sdk"
 import Configs from "../config"
 import { Events } from "../interfaces"
-import { FlexMessageBuilders } from "./helpers/builders"
+import { FlexMessageBuilders, formatDate, formatTime } from "./helpers/builders"
 import { LineService } from "./line"
 
 export namespace SpreeGOService {
@@ -166,6 +166,73 @@ export namespace SpreeGOService {
                         : ""
                     }`,
                     align: "center",
+                  },
+                ],
+              },
+              {
+                type: "box",
+                layout: "horizontal",
+                spacing: "sm",
+                contents: [
+                  {
+                    type: "text",
+                    text: "Location",
+                    color: "#aaaaaa",
+                    size: "sm",
+                    flex: 3,
+                  },
+                  {
+                    type: "text",
+                    wrap: true,
+                    color: "#666666",
+                    size: "sm",
+                    flex: 11,
+                    contents: [],
+                    text: `${reqBody.location.text}` as unknown as undefined,
+                  },
+                ],
+              },
+              {
+                type: "box",
+                layout: "baseline",
+                spacing: "sm",
+                contents: [
+                  {
+                    type: "text",
+                    text: "Date",
+                    color: "#aaaaaa",
+                    size: "sm",
+                    flex: 3,
+                  },
+                  {
+                    type: "text",
+                    text: `${formatDate(reqBody.date)}`,
+                    wrap: true,
+                    color: "#666666",
+                    size: "sm",
+                    flex: 11,
+                  },
+                ],
+              },
+              {
+                type: "box",
+                layout: "baseline",
+                spacing: "sm",
+                contents: [
+                  {
+                    type: "text",
+                    text: "Time",
+                    color: "#aaaaaa",
+                    size: "sm",
+                    flex: 3,
+                  },
+                  {
+                    type: "text",
+                    text: `${formatTime(reqBody.startTime)} - ${formatTime(reqBody.endTime)}`,
+                    wrap: true,
+                    color: "#666666",
+                    size: "sm",
+                    flex: 11,
                   },
                 ],
               },
