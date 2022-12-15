@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb"
+
 export interface Host {
   userId: string
   displayName: string
@@ -14,6 +16,7 @@ export interface Members {
   withFriends: number
 }
 export interface Events {
+  _id: ObjectId
   groupId: string
   name: string
   dueDate: Date

@@ -22,13 +22,13 @@ const joinEvent = async (
   if (!event)
     res.status(404).json({ status: false, message: "Event is not found" })
 
-  if (event.status===false) {
+  if (event.status === false) {
     res.status(500).json({ status: false, message: "Event is deleted" })
   }
 
   const { members = [] } = event
 
-  const findUser = members.find((member: any) => (member.userId === userId))
+  const findUser = members.find((member: any) => member.userId === userId)
   if (findUser) {
     findUser.joinType = "going"
     findUser.displayName = displayName
@@ -43,7 +43,14 @@ const joinEvent = async (
     { $set: { members } }
   )
 
-  await SpreeGOService.join({ ...req.body, name: event.name, host: event.host, eventId: event._id.toString(), groupId: event.groupId, members: members })
+  await SpreeGOService.join({
+    ...req.body,
+    name: event.name,
+    host: event.host,
+    eventId: event._id.toString(),
+    groupId: event.groupId,
+    members: members,
+  })
 
   return res.json({ status: true, updated })
 }

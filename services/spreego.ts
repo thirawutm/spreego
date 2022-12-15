@@ -249,22 +249,24 @@ export namespace SpreeGOService {
 
   export function list(reqBody: any, events: Events[]): Promise<any> {
     const contents: any[] = events
-      .map((event: Events) => ({
-        type: "bubble",
-        header: FlexMessageBuilders.buildListHeader(
-          event.name,
-          event.host,
-          reqBody.eventId
-        ),
-        body: FlexMessageBuilders.buildListBody(
-          event.location,
-          event.date,
-          event.startTime,
-          event.endTime,
-          event.members,
-          event.eventId
-        ),
-      }))
+      .map((event: Events) => {
+        return {
+          type: "bubble",
+          header: FlexMessageBuilders.buildListHeader(
+            event.name,
+            event.host,
+            event._id.toString()
+          ),
+          body: FlexMessageBuilders.buildListBody(
+            event.location,
+            event.date,
+            event.startTime,
+            event.endTime,
+            event.members,
+            event._id.toString()
+          ),
+        }
+      })
       .slice(0, 12)
     const messages: Message[] = [
       {
@@ -309,6 +311,7 @@ export namespace SpreeGOService {
   }
 
   export function error(reqBody: any): Promise<any> {
+    console.log("🚀 ~ file: spreego.ts:312 ~ error ~ reqBody", reqBody)
     const messages: Message[] = [
       {
         type: "text",
