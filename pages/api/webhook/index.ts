@@ -17,9 +17,14 @@ async function messageController(reqBody: any): Promise<any> {
     case "#createevent":
       return SpreeGOService.setup(reqBody)
     case "#eventlist": {
+      const groupId = reqBody.events[0]?.source?.groupId || undefined
+      if (!groupId) return null
+
       const events = await axios
-        .get(`${Configs.HOST}/api/event`)
+        .get(`${Configs.HOST}/api/event?groupId=${groupId}`)
         .then((res) => res.data.events)
+      if (!events.length) return null
+
       return SpreeGOService.list(reqBody, events)
     }
     default:

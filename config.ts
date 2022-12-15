@@ -13,7 +13,7 @@ const Configs = {
   MONGODB: {
     URI: process.env.MONGODB_URI || "mongodb://localhost:27017",
   },
-  NOTIFY_EVERY_MINS: parseInt(process.env.NOTIFY_EVERY_MINS ?? "240")
+  NOTIFY_EVERY_MINS: parseInt(process.env.NOTIFY_EVERY_MINS ?? "240"),
 }
 
 export default Configs
