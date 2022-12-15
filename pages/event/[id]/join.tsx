@@ -163,7 +163,7 @@ export default function JoinEvent({ profile }: JoinEventProps) {
           <Avatar
             alt={`${joiner.displayName} avatar`}
             src={joiner.pictureUrl}
-            sx={{ width: 100, height: 100, marginRight: "16px" }}
+            sx={{ width: 100, height: 100 }}
           />
 
           <Typography variant="body1" color="grey">
@@ -172,7 +172,8 @@ export default function JoinEvent({ profile }: JoinEventProps) {
             >
               {joiner.displayName}
             </Typography>
-            is joining{" "}
+            {isJoining ? " is joining" : "will join"}
+            &nbsp;
             <span
               style={{ color: "#3371FF", fontSize: "20px", fontWeight: "bold" }}
             >
@@ -183,7 +184,7 @@ export default function JoinEvent({ profile }: JoinEventProps) {
         {isFromExternal ? (
           <div
             style={{
-              padding: "8px 0 16px 0",
+              padding: "40px 0 0 0",
               marginBottom: "16px",
             }}
           >
@@ -193,7 +194,7 @@ export default function JoinEvent({ profile }: JoinEventProps) {
               fontWeight="bold"
               marginBottom="16px"
             >
-              Do you want to join with him/her?
+              Do you want to {isJoining ? "leave" : "join with him/her"}?
             </Typography>
           </div>
         ) : (
@@ -260,23 +261,25 @@ export default function JoinEvent({ profile }: JoinEventProps) {
           </div>
         )}
 
-        <Button
-          style={{
-            width: "80%",
-            backgroundColor: "#3371FF",
-          }}
-          size="large"
-          variant="contained"
-          onClick={handleSubmit}
-          hidden={isJoining && isFromExternal}
-        >
-          {isJoining ? "Update Join" : "Join Now"}
-        </Button>
+        {(!isFromExternal || (isFromExternal && !isJoining)) && (
+          <Button
+            style={{
+              width: "80%",
+              marginBottom: "20px",
+              backgroundColor: "#3371FF",
+            }}
+            size="large"
+            variant="contained"
+            onClick={handleSubmit}
+          >
+            {isJoining ? "Update Join" : "Join Now"}
+          </Button>
+        )}
 
         {isJoining && (
           <Button
             style={{
-              marginTop: "20px",
+              marginBottom: "20px",
               width: "80%",
             }}
             color="error"
