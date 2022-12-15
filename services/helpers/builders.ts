@@ -112,7 +112,7 @@ export namespace FlexMessageBuilders {
     return {
       type: "box",
       layout: "vertical",
-      spacing: "xl",
+      spacing: "md",
       contents: [
         {
           type: "text",
@@ -416,6 +416,11 @@ export namespace FlexMessageBuilders {
       backgroundColor,
       alignItems: "flex-end",
       spacing: "sm",
+      action: {
+        type: "uri",
+        label: "More Details",
+        uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${event.eventId}`,
+      },
       contents: [
         {
           type: "box",
@@ -464,15 +469,17 @@ export namespace FlexMessageBuilders {
         1 + (parseInt(member.withFriends?.toString() ?? "0") ?? 0))
     }, 0)
 
-    return {
-      type: "text",
-      text: `${totalJoin} ${
-        isSummary ? "people has joined" : "people are joining"
-      }`,
-      size: "sm",
-      weight: "bold",
-      color: "#3371FF",
-    }
+    return totalJoin
+      ? {
+          type: "text",
+          text: `${totalJoin} ${
+            isSummary ? "people have joined" : "people are joining"
+          }`,
+          size: "sm",
+          weight: "bold",
+          color: isSummary ? "#32CD32" : "#3371FF",
+        }
+      : { type: "filler" }
   }
   export function buildJoiners(members: Members[] = []): FlexBox {
     const joiners = members
@@ -538,15 +545,17 @@ export namespace FlexMessageBuilders {
         1 + (parseInt(member.withFriends?.toString() ?? "0") ?? 0))
     }, 0)
 
-    return {
-      type: "text",
-      text: `${totalDecline} ${
-        isSummary ? "people have declined" : "people are declining"
-      }`,
-      size: "sm",
-      weight: "bold",
-      color: "#E0a38e",
-    }
+    return totalDecline
+      ? {
+          type: "text",
+          text: `${totalDecline} ${
+            isSummary ? "people have dumped us" : "people are dumping us"
+          }`,
+          size: "sm",
+          weight: "bold",
+          color: isSummary ? "#FF0000" : "#E0a38e",
+        }
+      : { type: "filler" }
   }
   export function buildDeserters(members: Members[] = []): FlexBox {
     const joiners = members

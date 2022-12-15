@@ -124,23 +124,25 @@ export namespace SpreeGOService {
             contents: [
               {
                 type: "box",
-                layout: "baseline",
+                layout: "vertical",
                 spacing: "md",
                 contents: [
                   {
-                    type: "icon",
+                    type: "image",
                     url:
                       reqBody.user.pictureUrl ??
                       `${Configs.HOST}/user-default.png`,
-                    size: "xxl",
                   },
                   {
                     type: "text",
                     text: `${reqBody.user.displayName} is joining ${
                       reqBody.user.withFriends > 0
-                        ? `(+${reqBody.user.withFriends})`
+                        ? `(+${reqBody.user.withFriends} ${
+                            reqBody.user.withFriends > 1 ? "Friends" : "Friend"
+                          })`
                         : ""
                     }`,
+                    align: "center",
                   },
                 ],
               },
@@ -187,23 +189,25 @@ export namespace SpreeGOService {
             contents: [
               {
                 type: "box",
-                layout: "baseline",
+                layout: "vertical",
                 spacing: "md",
                 contents: [
                   {
-                    type: "icon",
+                    type: "image",
                     url:
                       reqBody.user.pictureUrl ??
                       `${Configs.HOST}/user-default.png`,
-                    size: "xxl",
                   },
                   {
                     type: "text",
-                    text: `${reqBody.user.displayName} has declined ${
+                    text: `${reqBody.user.displayName} is joining ${
                       reqBody.user.withFriends > 0
-                        ? `(+${reqBody.user.withFriends})`
+                        ? `(+${reqBody.user.withFriends} ${
+                            reqBody.user.withFriends > 1 ? "Friends" : "Friend"
+                          })`
                         : ""
                     }`,
+                    align: "center",
                   },
                 ],
               },
