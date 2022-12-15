@@ -129,7 +129,7 @@ export default function EventDetails({ profile }: EventDetailsProps) {
                 },
                 {
                   type: "image",
-                  url: `${Configs.HOST}/ren-confetti.png`,
+                  url: `https://spreego.vercel.app/ren-confetti.png`,
                 },
               ],
             },
@@ -197,7 +197,9 @@ export default function EventDetails({ profile }: EventDetailsProps) {
                     },
                     {
                       type: "text",
-                      text: `${formatTime(event.startTime)} - ${formatTime(event.endTime)}`,
+                      text: `${formatTime(event.startTime)} - ${formatTime(
+                        event.endTime
+                      )}`,
                       wrap: true,
                       color: "#666666",
                       size: "sm",
@@ -218,10 +220,12 @@ export default function EventDetails({ profile }: EventDetailsProps) {
                 {
                   type: "separator",
                 },
-                FlexMessageBuilders.buildJoinerCount(event.members as Members[]),
+                FlexMessageBuilders.buildJoinerCount(
+                  event.members as Members[]
+                ),
                 FlexMessageBuilders.buildJoiners(event.members as Members[]),
               ],
-            }
+            },
           },
         },
       ])
@@ -404,7 +408,7 @@ export default function EventDetails({ profile }: EventDetailsProps) {
                 : "Join Event"}
             </Button>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} visibility={event.status ? "visible" : "hidden"}>
             <Button
               fullWidth
               size="large"
