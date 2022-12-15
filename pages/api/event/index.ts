@@ -23,7 +23,7 @@ const create = async (
   collection: Document
 ) => {
   const {host} = req.body
-  const doc = {...req.body, members: [{...host, joinType: 'going', withFriends: 0 }], status: true }
+  const doc = {...req.body, members: [{...host, joinType: 'going', withFriends: 0 }], status: true, isCompleted: false, latestNotify: new Date(), createdAt: new Date(), updatedAt: new Date() }
 
   const created = await collection.insertOne(doc)
   await SpreeGOService.announce({...doc, eventId: created.insertedId.toString() })
@@ -40,7 +40,7 @@ const update = async (
 
   const updated = await collection.updateOne(
     { _id: new ObjectId(id) },
-    { $set: toUpdate }
+    { $set: {...toUpdate, updatedAt: new Date() } }
   )
 
   return res.json({ status: true, updated })

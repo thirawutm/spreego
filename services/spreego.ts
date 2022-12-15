@@ -105,6 +105,30 @@ export namespace SpreeGOService {
     return LineService.pushMessage(reqBody, messages)
   }
 
+  export function reminder(reqBody: Events): Promise<any> {
+    const { name, host } = reqBody
+    const { location, date, startTime, endTime, members, eventId } = reqBody
+    const messages: Message[] = [
+      {
+        type: "flex",
+        altText: "มาเข้าตี้ซะดีๆ SpreePle",
+        contents: {
+          type: "bubble",
+          header: FlexMessageBuilders.buildSummaryHeader("Reminder 🗓", reqBody),
+          body: FlexMessageBuilders.buildListBody(
+            location,
+            date,
+            startTime,
+            endTime,
+            members,
+            eventId
+          ),
+        },
+      },
+    ]
+    return LineService.pushMessage(reqBody, messages)
+  }
+
   export function join(reqBody: any): Promise<any> {
     const messages: Message[] = [
       {
@@ -124,23 +148,25 @@ export namespace SpreeGOService {
             contents: [
               {
                 type: "box",
-                layout: "baseline",
+                layout: "vertical",
                 spacing: "md",
                 contents: [
                   {
-                    type: "icon",
+                    type: "image",
                     url:
                       reqBody.user.pictureUrl ??
                       `${Configs.HOST}/user-default.png`,
-                    size: "xxl",
                   },
                   {
                     type: "text",
                     text: `${reqBody.user.displayName} is joining ${
                       reqBody.user.withFriends > 0
-                        ? `(+${reqBody.user.withFriends})`
+                        ? `(+${reqBody.user.withFriends} ${
+                            reqBody.user.withFriends > 1 ? "Friends" : "Friend"
+                          })`
                         : ""
                     }`,
+                    align: "center",
                   },
                 ],
               },
@@ -187,23 +213,25 @@ export namespace SpreeGOService {
             contents: [
               {
                 type: "box",
-                layout: "baseline",
+                layout: "vertical",
                 spacing: "md",
                 contents: [
                   {
-                    type: "icon",
+                    type: "image",
                     url:
                       reqBody.user.pictureUrl ??
                       `${Configs.HOST}/user-default.png`,
-                    size: "xxl",
                   },
                   {
                     type: "text",
-                    text: `${reqBody.user.displayName} has declined ${
+                    text: `${reqBody.user.displayName} is joining ${
                       reqBody.user.withFriends > 0
-                        ? `(+${reqBody.user.withFriends})`
+                        ? `(+${reqBody.user.withFriends} ${
+                            reqBody.user.withFriends > 1 ? "Friends" : "Friend"
+                          })`
                         : ""
                     }`,
+                    align: "center",
                   },
                 ],
               },

@@ -8,33 +8,48 @@ import moment from "moment"
 
 const COLLECTION_NAME = "events"
 
-const summaryEvents = async (
+const notifyEvents = async (
   req: NextApiRequest,
   res: NextApiResponse,
   collection: Document
 ) => {
 
-    const now = moment().toDate()
+  const hours = -4
+    const checkNoti = moment().add(hours, 'hours')
 
     const aggregated = [ {
       $addFields: {
-         dateEnd: {
-            $dateFromString: {
-               dateString: '$endTime'
-            }
-         }
+          dateEnd: {
+             $dateFromString: {
+                dateString: '$endTime'
+             }
+          },
+             dateStart: {
+                $dateFromString: {
+                  dateString: "$startTime"
+                }
+             }
       }
-   },
-   {
-       $match: { dateEnd: {$lt: new Date(now)}, status: true, isCompleted: false }
-   }
+       
+    },
+    {
+        $match: { 
+            status: true,
+            isCompleted: false,
+            dateStart: {$gt: new Date()},
+            latestNotify: {$lt: new Date(checkNoti.toDate()) }
+        }
+    }
    ]
+    // console.log("🚀 ~ file: notify.ts:44 ~ aggregated", JSON.stringify(aggregated) )
 
   const events = await collection.aggregate(aggregated).toArray()
 
-  await SpreeGOService.summary(events)
+  await Promise.all(events.map((event: any) => {
+    return SpreeGOService.reminder(event)
+  }))
 
-  await collection.updateMany({_id: {$in: events.map((x: { _id: any })=> x._id)}}, { $set: { isCompleted: true }})
+  await collection.updateMany({_id: {$in: events.map((x: { _id: any })=> x._id)}}, { $set: { latestNotify: new Date() }})
 
   return res.json({ status: true, total: events.length, events })
 }
@@ -52,7 +67,7 @@ export default async function handler(
     console.log(req.method)
     switch (req.method) {
       case "GET":
-        return summaryEvents(req, res, collection)
+        return notifyEvents(req, res, collection)
       default:
         return res
           .status(404)
