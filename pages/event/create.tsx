@@ -70,7 +70,7 @@ export default function CreateEvent({ profile }: CreateEventProps) {
   return (
     <Container maxWidth="sm" style={{ marginTop: "16px" }}>
       <Image
-        className="image"
+        className="prevent-select"
         style={{ zIndex: -10, position: "absolute", top: 10, opacity: 0.15 }}
         src="/ren-confetti.png"
         width={350}
