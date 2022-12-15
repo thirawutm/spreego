@@ -15,15 +15,64 @@ const summaryEvents = async (
 ) => {
 
     const now = moment().toDate()
-    console.log("🚀 ~ file: summary.ts:18 ~ now", now)
 
-  const events = await collection.find({
-    status: true,
-    // endTime: {$lt: now}
+    const aggregated = [ {
+      $addFields: {
+         dateEnd: {
+            $dateFromString: {
+               dateString: '$endTime'
+            }
+         }
+      }
+   },
+   {
+       $match: { dateEnd: {$lt: new Date(now)}, status: true, isCompleted: false }
+   }
+   ]
 
-  }).toArray()
+  const events = await collection.aggregate(aggregated).toArray()
 
-  return res.json({ status: true, events })
+  await SpreeGOService.summary(events)
+
+  await collection.updateMany({_id: {$in: events.map((x: { _id: any })=> x._id)}}, { $set: { isCompleted: true }})
+
+  return res.json({ status: true, totel: events.length, events })
+}
+
+const notifyEvents = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  collection: Document
+) => {
+
+    const now = moment().toDate()
+
+    const aggregated = [ {
+      $addFields: {
+         dateEnd: {
+            $dateFromString: {
+               dateString: '$endTime'
+            }
+         },
+         dateStart: {
+            $dateFromString: {
+              dateString: "$startTime"
+            }
+         }
+      }
+   },
+   {
+       $match: { dateEnd: {$lt: new Date(now)}, status: true, isCompleted: false }
+   }
+   ]
+
+  const events = await collection.aggregate(aggregated).toArray()
+
+  await SpreeGOService.summary(events)
+
+  await collection.updateMany({_id: {$in: events.map((x: { _id: any })=> x._id)}}, { $set: { isCompleted: true }})
+
+  return res.json({ status: true, totel: events.length, events })
 }
 
 export default async function handler(
