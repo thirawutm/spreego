@@ -17,39 +17,17 @@ import {
   formatDate,
   formatTime,
 } from "../../../services/helpers/builders"
-import { Profile, RootProps } from "../../_app"
-import { Members } from "../../../interfaces"
+import { RootProps } from "../../_app"
+import { FrontEndType, Members } from "../../../interfaces"
 import Configs from "../../../config"
 
 export interface EventDetailsProps extends RootProps {}
-
-type Host = { userId: string; displayName: string; pictureUrl?: string }
-interface Joiner extends Omit<Profile, "statusMessage" | "groupId"> {
-  withFriends: number
-  joinType: string
-}
-
-type Event = {
-  groupId: string
-  _id: string
-  name: string
-  location: {
-    text: string
-  }
-  date: string
-  startTime: string
-  endTime: string
-  host: Host
-  members: Joiner[]
-  status: boolean
-  isCompleted: boolean
-}
 
 export default function EventDetails({ profile }: EventDetailsProps) {
   const router = useRouter()
 
   const [isLoading, setIsLoading] = useState(true)
-  const [event, setEvent] = useState<Event>()
+  const [event, setEvent] = useState<FrontEndType.Event>()
 
   useEffect(() => {
     const fetchEvent = async () => {
