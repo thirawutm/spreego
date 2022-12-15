@@ -12,9 +12,11 @@ const list = async (
   res: NextApiResponse,
   collection: Document
 ) => {
-  const events = await collection.find().toArray()
+  const { groupId } = req.query
+  const query = groupId ? { groupId } : {}
+  const events = await collection.find(query).toArray()
   
-  return res.json({ status: true, events })
+  return res.json({ status: true, total: events.length, events })
 }
 
 const create = async (
