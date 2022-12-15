@@ -347,7 +347,7 @@ export namespace SpreeGOService {
     )
   }
 
-  export async function payment(event: Events): Promise<any> {
+  export function payment(event: Events): Promise<any> {
     const messages: Message[] = [
       {
         type: "flex",
@@ -365,7 +365,7 @@ export namespace SpreeGOService {
             contents: [
               {
                 type: "image",
-                url: `https://promptpay.io/${event.payment.promptPay}`,
+                url: `https://promptpay.io/${event.payment.promptPay}.png`,
               },
               {
                 type: "separator",

@@ -61,7 +61,7 @@ const create = async (
   })
 
   const payment = {
-    paymentPromptPay,
+    promptPay: paymentPromptPay,
     totalMoney
   }
 
@@ -71,7 +71,7 @@ const create = async (
   )
 
 
-  // await SpreeGOService.payment(event)
+  const result = await SpreeGOService.payment(event)
 
   return res.json({ status: true, updated })
 
