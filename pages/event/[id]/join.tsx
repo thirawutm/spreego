@@ -254,19 +254,19 @@ export default function JoinEvent({ profile }: JoinEventProps) {
           </div>
         )}
 
-        {router.query.external !== "true" && (
-          <Button
-            style={{
-              width: "80%",
-              backgroundColor: "#3371FF",
-            }}
-            size="large"
-            variant="contained"
-            onClick={handleSubmit}
-          >
-            {isJoin ? "Update Join" : "Join Now"}
-          </Button>
-        )}
+        <Button
+          style={{
+            width: "80%",
+            backgroundColor: "#3371FF",
+          }}
+          size="large"
+          variant="contained"
+          onClick={handleSubmit}
+        >
+          {isJoin && router.query.external !== "true"
+            ? "Update Join"
+            : "Join Now"}
+        </Button>
 
         {isJoin && (
           <Button

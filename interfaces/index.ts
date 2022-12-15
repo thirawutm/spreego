@@ -14,6 +14,12 @@ export interface Members {
   pictureUrl: string
   joinType: string
   withFriends: number
+  money: number
+}
+export interface Payment {
+  totalMoney: number
+  promptPay: string
+  qrUrl: string
 }
 export interface Events {
   _id: ObjectId
@@ -27,5 +33,6 @@ export interface Events {
   host: Host
   location: Location
   members: Members[]
+  payment: Payment
   eventId: string
 }

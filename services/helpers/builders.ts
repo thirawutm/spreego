@@ -178,6 +178,7 @@ export namespace FlexMessageBuilders {
             {
               type: "text",
               text: `${name}`,
+              wrap: true,
               weight: "bold",
               size: "xl",
               color: "#FFFFFF",
@@ -440,6 +441,7 @@ export namespace FlexMessageBuilders {
             {
               type: "text",
               text: `${event.name}`,
+              wrap: true,
               size: "lg",
               weight: "bold",
               color: "#FFFFFF",
@@ -475,7 +477,7 @@ export namespace FlexMessageBuilders {
       ? {
           type: "text",
           text: `${totalJoin} ${
-            isSummary ? "people have joined" : "people are joining"
+            isSummary ? "people joined" : "people are joining"
           }`,
           size: "sm",
           weight: "bold",
@@ -551,7 +553,7 @@ export namespace FlexMessageBuilders {
       ? {
           type: "text",
           text: `${totalDecline} ${
-            isSummary ? "people have dumped us" : "people are dumping us"
+            isSummary ? "people dumped us" : "people are dumping us"
           }`,
           size: "sm",
           weight: "bold",
@@ -614,5 +616,32 @@ export namespace FlexMessageBuilders {
         },
       ],
     }
+  }
+
+  export function buildDebtor(members: Members[]): FlexBox[] {
+    const debtors: FlexBox[] = members
+      .filter((fil) => fil.joinType === "going")
+      .map((member: Members) => ({
+        type: "box",
+        layout: "baseline",
+        spacing: "md",
+        contents: [
+          {
+            type: "icon",
+            url: `${member.pictureUrl}`,
+            size: "xl",
+          },
+          {
+            type: "text",
+            text: `${member.displayName}`,
+          },
+          {
+            type: "text",
+            text: `${member.money}`,
+            weight: "bold",
+          },
+        ],
+      }))
+    return debtors
   }
 }
