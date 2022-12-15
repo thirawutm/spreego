@@ -93,6 +93,7 @@ export default function EventDetails({ profile }: EventDetailsProps) {
                     {
                       type: "text",
                       text: `${event.name}`,
+                      wrap: true,
                       weight: "bold",
                       size: "xl",
                       color: "#FFFFFF",
@@ -108,6 +109,28 @@ export default function EventDetails({ profile }: EventDetailsProps) {
                 {
                   type: "image",
                   url: `https://spreego.vercel.app/ren-confetti.png`,
+                },
+                {
+                  type: "box",
+                  layout: "vertical",
+                  contents: [
+                    {
+                      type: "text",
+                      text: "INVITE",
+                      color: "#3371FF",
+                      align: "center",
+                      size: "12px",
+                      offsetTop: "3px",
+                      weight: "bold",
+                    },
+                  ],
+                  position: "absolute",
+                  cornerRadius: "15px",
+                  backgroundColor: "#ffffff",
+                  height: "20px",
+                  width: "60px",
+                  offsetTop: "4px",
+                  offsetEnd: "4px",
                 },
               ],
             },
@@ -399,7 +422,9 @@ export default function EventDetails({ profile }: EventDetailsProps) {
           <Grid
             item
             xs={12}
-            visibility={event.status && !event.isCompleted ? "visible" : "hidden"}
+            visibility={
+              event.status && !event.isCompleted ? "visible" : "hidden"
+            }
             margin="0 16px"
           >
             <Button
@@ -492,7 +517,7 @@ export default function EventDetails({ profile }: EventDetailsProps) {
               fullWidth
               size="large"
               variant="contained"
-              color="primary"
+              sx={{ backgroundColor: "#3371FF" }}
               onClick={handleUpdate}
               disabled={
                 !event.name ||
