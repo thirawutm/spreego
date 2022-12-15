@@ -558,7 +558,7 @@ export namespace FlexMessageBuilders {
       : { type: "filler" }
   }
   export function buildDeserters(members: Members[] = []): FlexBox {
-    const joiners = members
+    const deserters = members
       .filter((fil) => fil.joinType === "decline")
       .reduce(
         (
@@ -566,7 +566,7 @@ export namespace FlexMessageBuilders {
           member,
           idx
         ) => {
-          const joinerFlex: FlexComponent = {
+          const deserterFlex: FlexComponent = {
             type: "box",
             layout: "baseline",
             contents: [
@@ -584,7 +584,9 @@ export namespace FlexMessageBuilders {
               },
             ],
           }
-          idx % 2 === 0 ? acc.left.push(joinerFlex) : acc.right.push(joinerFlex)
+          idx % 2 === 0
+            ? acc.left.push(deserterFlex)
+            : acc.right.push(deserterFlex)
           return acc
         },
         { left: [], right: [] }
@@ -599,14 +601,14 @@ export namespace FlexMessageBuilders {
           layout: "vertical",
           spacing: "xl",
           flex: 2,
-          contents: joiners.left,
+          contents: deserters.left,
         },
         {
           type: "box",
           layout: "vertical",
           spacing: "xl",
           flex: 2,
-          contents: joiners.right,
+          contents: deserters.right,
         },
       ],
     }

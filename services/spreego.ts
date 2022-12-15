@@ -106,7 +106,6 @@ export namespace SpreeGOService {
   }
 
   export function reminder(reqBody: Events): Promise<any> {
-    const { name, host } = reqBody
     const { location, date, startTime, endTime, members, eventId } = reqBody
     const messages: Message[] = [
       {
