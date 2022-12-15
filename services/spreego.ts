@@ -248,26 +248,26 @@ export namespace SpreeGOService {
   }
 
   export function list(reqBody: any, events: Events[]): Promise<any> {
-    const contents: any[] = events
-      .map((event: Events) => {
-        return {
-          type: "bubble",
-          header: FlexMessageBuilders.buildListHeader(
-            event.name,
-            event.host,
-            event._id.toString()
-          ),
-          // body: FlexMessageBuilders.buildListBody(
-          //   event.location,
-          //   event.date,
-          //   event.startTime,
-          //   event.endTime,
-          //   event.members,
-          //   event._id.toString()
-          // ),
-        }
-      })
-      .slice(0, 3)
+    const contents: any[] = events.map((event: Events) => {
+      const bubble = {
+        type: "bubble",
+        header: FlexMessageBuilders.buildListHeader(
+          event.name,
+          event.host,
+          event._id.toString()
+        ),
+        // body: FlexMessageBuilders.buildListBody(
+        //   event.location,
+        //   event.date,
+        //   event.startTime,
+        //   event.endTime,
+        //   event.members,
+        //   event._id.toString()
+        // ),
+      }
+      return bubble
+    })
+    const minimizedContents = contents.slice(0, 3)
     const moreEventBubble: FlexBubble = {
       type: "bubble",
       header: {
@@ -305,13 +305,16 @@ export namespace SpreeGOService {
         ],
       },
     }
+
+    if (minimizedContents.length >= 3) minimizedContents.push(moreEventBubble)
+
     const messages: Message[] = [
       {
         type: "flex",
         altText: "มาเข้าตี้ซะดีๆ SpreePle",
         contents: {
           type: "carousel",
-          contents: [...contents, moreEventBubble],
+          contents: minimizedContents,
         },
       },
     ]
@@ -342,7 +345,9 @@ export namespace SpreeGOService {
         }
         try {
           await LineService.pushMessage({ groupId: event.groupId }, [message])
-        } catch (e) {}
+        } catch (e) {
+          // skip
+        }
       })
     )
   }
@@ -368,6 +373,11 @@ export namespace SpreeGOService {
                 url: `https://promptpay.io/${event.payment.promptPay}.png`,
               },
               {
+                type: "text",
+                text: `${event.payment.promptPay}`,
+                align: "center",
+              },
+              {
                 type: "separator",
               },
               ...FlexMessageBuilders.buildDebtor(event.members),
@@ -380,7 +390,6 @@ export namespace SpreeGOService {
   }
 
   export function error(reqBody: any): Promise<any> {
-    console.log("🚀 ~ file: spreego.ts:312 ~ error ~ reqBody", reqBody)
     const messages: Message[] = [
       {
         type: "text",
