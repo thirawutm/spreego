@@ -47,7 +47,7 @@ const notifyEvents = async (
   const events = await collection.aggregate(aggregated).toArray()
 
   await Promise.all(events.map((event: any) => {
-    return SpreeGOService.reminder(event)
+    return SpreeGOService.reminder({...event, eventId: event._id.toString()})
   }))
 
   await collection.updateMany({_id: {$in: events.map((x: { _id: any })=> x._id)}}, { $set: { latestNotify: new Date() }})

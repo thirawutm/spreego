@@ -223,7 +223,7 @@ export namespace SpreeGOService {
                   },
                   {
                     type: "text",
-                    text: `${reqBody.user.displayName} is joining ${
+                    text: `${reqBody.user.displayName} has dumped us!! ${
                       reqBody.user.withFriends > 0
                         ? `(+${reqBody.user.withFriends} ${
                             reqBody.user.withFriends > 1 ? "Friends" : "Friend"

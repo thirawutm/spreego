@@ -32,7 +32,7 @@ const summaryEvents = async (
 
   const events = await collection.aggregate(aggregated).toArray()
 
-  await SpreeGOService.summary(events)
+  await SpreeGOService.summary(events.map((event:any) => { return {...event, eventId: event._id.toString()}}))
 
   await collection.updateMany({_id: {$in: events.map((x: { _id: any })=> x._id)}}, { $set: { isCompleted: true }})
 
