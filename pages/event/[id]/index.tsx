@@ -274,9 +274,13 @@ export default function EventDetails({ profile }: EventDetailsProps) {
     return null
   }
 
-  if (event.host.userId !== profile.userId || !event.status) {
+  if (
+    event.host.userId !== profile.userId ||
+    !event.status ||
+    event.isCompleted
+  ) {
     return (
-      <Container maxWidth="sm" style={{ marginTop: "16px" }}>
+      <div style={{ marginTop: "16px", flexGrow: 1 }}>
         <Image
           className="prevent-select"
           style={{
@@ -290,51 +294,52 @@ export default function EventDetails({ profile }: EventDetailsProps) {
           height={350}
           alt="Ren Confetti image"
         />
-        {!event.status &&
-          (event.isCompleted ? (
-            <Typography
-              variant="h2"
-              fontWeight="bold"
-              className="prevent-select"
-              sx={{
-                position: "absolute",
-                color: "#00890954",
-                rotate: "-40deg",
-                top: 220,
-                left: -5,
-              }}
-            >
-              COMPLETED
-            </Typography>
-          ) : (
-            <Typography
-              variant="h2"
-              fontWeight="bold"
-              className="prevent-select"
-              sx={{
-                position: "absolute",
-                color: "#ff000055",
-                rotate: "-40deg",
-                top: 220,
-              }}
-            >
-              CANCELED
-            </Typography>
-          ))}
+        {!event.status && (
+          <Typography
+            variant="h2"
+            fontWeight="bold"
+            className="prevent-select"
+            sx={{
+              position: "absolute",
+              color: "#ff000055",
+              rotate: "-40deg",
+              top: 220,
+              left: 20,
+            }}
+          >
+            CANCELED
+          </Typography>
+        )}
+        {event.isCompleted && (
+          <Typography
+            variant="h2"
+            fontWeight="bold"
+            className="prevent-select"
+            sx={{
+              position: "absolute",
+              color: "#00890954",
+              rotate: "-40deg",
+              top: 220,
+              left: 0,
+            }}
+          >
+            COMPLETED
+          </Typography>
+        )}
 
         <Grid container spacing={2}>
           <Grid item xs={12} padding="16px 0" bgcolor="#3371FF">
-            <Typography variant="h4" color="white">
+            <Typography variant="h4" color="white" padding="0 16px">
               {event.name}
-            </Typography>
-            <Typography variant="body1" color="white">
-              By{" "}
-              <span style={{ fontWeight: "bold", fontSize: "16px" }}>
-                @{event.host.displayName}
-              </span>
+              <Typography variant="body1" color="white">
+                By{" "}
+                <span style={{ fontWeight: "bold", fontSize: "16px" }}>
+                  @{event.host.displayName}
+                </span>
+              </Typography>
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} margin="0 16px">
             <Typography variant="caption" color="grey">
               Location
             </Typography>
@@ -348,7 +353,7 @@ export default function EventDetails({ profile }: EventDetailsProps) {
               {event.location.text}
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} margin="0 16px">
             <Typography variant="caption" color="grey">
               Date
             </Typography>
@@ -362,39 +367,44 @@ export default function EventDetails({ profile }: EventDetailsProps) {
               {moment(event.date).add(7, "hours").format("MMMM Do YYYY")}
             </Typography>
           </Grid>
-          <Grid item xs={6}>
-            <Typography variant="caption" color="grey">
-              Start
-            </Typography>
-            <Typography
-              variant="body1"
-              color="#3371FF"
-              fontWeight="bold"
-              padding="8px 0"
-              borderBottom="1px solid #6a96ff"
-            >
-              {moment(event.startTime).add(7, "hours").format("HH:mm")}
-            </Typography>
+          <Grid container xs={12} spacing={2} margin="0 16px">
+            <Grid item xs={6}>
+              <Typography variant="caption" color="grey">
+                Start
+              </Typography>
+              <Typography
+                variant="body1"
+                color="#3371FF"
+                fontWeight="bold"
+                padding="8px 0"
+                borderBottom="1px solid #6a96ff"
+              >
+                {moment(event.startTime).add(7, "hours").format("HH:mm")}
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="caption" color="grey">
+                End
+              </Typography>
+              <Typography
+                variant="body1"
+                color="#3371FF"
+                fontWeight="bold"
+                padding="8px 0"
+                borderBottom="1px solid #6a96ff"
+              >
+                {moment(event.endTime).add(7, "hours").format("HH:mm")}
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <Typography variant="caption" color="grey">
-              End
-            </Typography>
-            <Typography
-              variant="body1"
-              color="#3371FF"
-              fontWeight="bold"
-              padding="8px 0"
-              borderBottom="1px solid #6a96ff"
-            >
-              {moment(event.endTime).add(7, "hours").format("HH:mm")}
-            </Typography>
-          </Grid>
+
           <Grid
             item
             xs={12}
-            marginTop="16px"
-            visibility={event.status ? "visible" : "hidden"}
+            visibility={
+              event.status && !event.isCompleted ? "visible" : "hidden"
+            }
+            margin="16px 16px 0 16px"
           >
             <Button
               fullWidth
@@ -408,7 +418,12 @@ export default function EventDetails({ profile }: EventDetailsProps) {
                 : "Join Event"}
             </Button>
           </Grid>
-          <Grid item xs={12} visibility={event.status ? "visible" : "hidden"}>
+          <Grid
+            item
+            xs={12}
+            visibility={event.status && !event.isCompleted ? "visible" : "hidden"}
+            margin="0 16px"
+          >
             <Button
               fullWidth
               size="large"
@@ -419,7 +434,7 @@ export default function EventDetails({ profile }: EventDetailsProps) {
             </Button>
           </Grid>
         </Grid>
-      </Container>
+      </div>
     )
   } else {
     return (
@@ -436,7 +451,6 @@ export default function EventDetails({ profile }: EventDetailsProps) {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              className="disabled-highlight"
               label="Event name"
               name="name"
               value={event.name}
@@ -446,7 +460,6 @@ export default function EventDetails({ profile }: EventDetailsProps) {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              className="disabled-highlight"
               label="Location"
               name="location"
               value={event.location.text}
@@ -456,7 +469,6 @@ export default function EventDetails({ profile }: EventDetailsProps) {
           <Grid item xs={12}>
             <DatePicker
               label="Date"
-              className="disabled-highlight"
               value={event.date}
               onChange={(newValue) => {
                 if (newValue) {
@@ -474,7 +486,6 @@ export default function EventDetails({ profile }: EventDetailsProps) {
           <Grid item xs={6}>
             <TimePicker
               label="Start"
-              className="disabled-highlight"
               ampm={false}
               value={event.startTime}
               onChange={(newValue) => {
@@ -488,7 +499,6 @@ export default function EventDetails({ profile }: EventDetailsProps) {
           <Grid item xs={6}>
             <TimePicker
               label="End"
-              className="disabled-highlight"
               ampm={false}
               value={event.endTime}
               onChange={(newValue) => {

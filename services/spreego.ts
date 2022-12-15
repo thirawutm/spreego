@@ -336,8 +336,8 @@ export namespace SpreeGOService {
             body: FlexMessageBuilders.buildSetupBodyWithJoiners(
               `don't forget to pay @${event.host.displayName} :)`,
               {
-                label: "Settle",
-                uri: `${Configs.LINE_LIFF.LIFF_URL}/event/calculate`,
+                label: "Calculate",
+                uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${event._id.toString()}/payment`,
               },
               event.members
             ),

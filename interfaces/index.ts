@@ -36,3 +36,36 @@ export interface Events {
   payment: Payment
   eventId: string
 }
+
+export namespace FrontEndType {
+  export interface Host {
+    userId: string
+    displayName: string
+    pictureUrl: string
+  }
+  export interface Location {
+    text: string
+  }
+
+  export interface Member {
+    userId: string
+    displayName: string
+    pictureUrl: string
+    joinType: string
+    withFriends: number
+  }
+
+  export interface Event {
+    _id: string
+    groupId: string
+    name: string
+    location: Location
+    date: string
+    startTime: string
+    endTime: string
+    host: Host
+    members: Member[]
+    status: boolean
+    isCompleted: boolean
+  }
+}
