@@ -18,7 +18,7 @@ interface Joiner extends Omit<Profile, "statusMessage" | "groupId"> {
 }
 
 export default function JoinEvent({ profile }: JoinEventProps) {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [eventName, setEventName] = useState("")
   const [joiner, setJoiner] = useState<Joiner>({
     userId: "",
@@ -32,7 +32,6 @@ export default function JoinEvent({ profile }: JoinEventProps) {
 
   useEffect(() => {
     if (profile) {
-      setIsLoading(true)
       setJoiner({
         ...joiner,
         userId: profile.userId,
@@ -50,19 +49,23 @@ export default function JoinEvent({ profile }: JoinEventProps) {
       data: { event },
     } = await axios.get("/api/event/" + router.query.id)
     setEventName(event.name)
-    if (event && event.members && event.members.length > 0) {
-      const findCurrentUser = event.members.find(
-        (member: any) => member.userId === userId
-      )
+    if (!event.status) {
+      await router.replace(`/event/${router.query.id}`)
+    } else {
+      if (event && event.members && event.members.length > 0) {
+        const findCurrentUser = event.members.find(
+          (member: any) => member.userId === userId
+        )
 
-      if (findCurrentUser) {
-        setIsJoin(findCurrentUser.joinType === "going")
-        if (findCurrentUser.withFriends && findCurrentUser.withFriends > 0) {
-          setWithFriends(findCurrentUser.withFriends)
+        if (findCurrentUser) {
+          setIsJoin(findCurrentUser.joinType === "going")
+          if (findCurrentUser.withFriends && findCurrentUser.withFriends > 0) {
+            setWithFriends(findCurrentUser.withFriends)
+          }
         }
       }
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -124,7 +127,7 @@ export default function JoinEvent({ profile }: JoinEventProps) {
     <>
       <div style={{ textAlign: "center" }}>
         <Image
-          className="image"
+          className="prevent-select"
           style={{
             position: "absolute",
             zIndex: -10,
