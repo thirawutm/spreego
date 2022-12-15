@@ -419,7 +419,7 @@ export namespace FlexMessageBuilders {
       action: {
         type: "uri",
         label: "More Details",
-        uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${event.eventId}`,
+        uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${event._id.toString()}`,
       },
       contents: [
         {
