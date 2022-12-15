@@ -1,4 +1,4 @@
-import { Message } from "@line/bot-sdk"
+import { FlexBubble, Message } from "@line/bot-sdk"
 import Configs from "../config"
 import { Events } from "../interfaces"
 import { FlexMessageBuilders } from "./helpers/builders"
@@ -257,24 +257,61 @@ export namespace SpreeGOService {
             event.host,
             event._id.toString()
           ),
-          body: FlexMessageBuilders.buildListBody(
-            event.location,
-            event.date,
-            event.startTime,
-            event.endTime,
-            event.members,
-            event._id.toString()
-          ),
+          // body: FlexMessageBuilders.buildListBody(
+          //   event.location,
+          //   event.date,
+          //   event.startTime,
+          //   event.endTime,
+          //   event.members,
+          //   event._id.toString()
+          // ),
         }
       })
-      .slice(0, 12)
+      .slice(0, 3)
+    const moreEventBubble: FlexBubble = {
+      type: "bubble",
+      header: {
+        type: "box",
+        layout: "horizontal",
+        backgroundColor: "#aaaaaa",
+        alignItems: "flex-end",
+        spacing: "sm",
+        contents: [
+          {
+            type: "box",
+            layout: "vertical",
+            flex: 2,
+            contents: [
+              {
+                type: "text",
+                text: `Tap Here`,
+                wrap: true,
+                weight: "bold",
+                size: "xl",
+                color: "#FFFFFF",
+              },
+              {
+                type: "text",
+                text: `for more events`,
+                size: "sm",
+                color: "#EEEEEE",
+              },
+            ],
+          },
+          {
+            type: "image",
+            url: `${Configs.HOST}/ren-confetti.png`,
+          },
+        ],
+      },
+    }
     const messages: Message[] = [
       {
         type: "flex",
         altText: "มาเข้าตี้ซะดีๆ SpreePle",
         contents: {
           type: "carousel",
-          contents,
+          contents: [...contents, moreEventBubble],
         },
       },
     ]
@@ -326,16 +363,10 @@ export namespace SpreeGOService {
             layout: "vertical",
             spacing: "md",
             contents: [
-              event.payment.qrUrl
-                ? {
-                    type: "image",
-                    url: `${event.payment.qrUrl}`,
-                  }
-                : {
-                    type: "text",
-                    text: `จ่ายเงินผ่าน PromptPay ${event.payment.promptPay}`,
-                    wrap: true,
-                  },
+              {
+                type: "image",
+                url: `https://promptpay.io/${event.payment.promptPay}`,
+              },
               {
                 type: "separator",
               },
