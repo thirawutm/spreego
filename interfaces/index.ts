@@ -50,7 +50,7 @@ export namespace FrontEndType {
   export interface Member {
     userId: string
     displayName: string
-    pictureUrl: string
+    pictureUrl?: string
     joinType: string
     withFriends: number
   }

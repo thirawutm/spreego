@@ -8,61 +8,64 @@ import {
 import axios from "axios"
 import Image from "next/image"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
-import { Profile, RootProps } from "../../_app"
+import { useEffect, useMemo, useState } from "react"
+import { FrontEndType } from "../../../interfaces"
+import { RootProps } from "../../_app"
 
 export interface JoinEventProps extends RootProps {}
 
-interface Joiner extends Omit<Profile, "statusMessage" | "groupId"> {
-  withFriends: number
-}
-
 export default function JoinEvent({ profile }: JoinEventProps) {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [eventName, setEventName] = useState("")
-  const [joiner, setJoiner] = useState<Joiner>({
+  const [joiner, setJoiner] = useState<FrontEndType.Member>({
     userId: "",
     displayName: "",
     pictureUrl: "",
     withFriends: 0,
+    joinType: "going",
   })
-  const [isJoin, setIsJoin] = useState(false)
-  const [withFriends, setWithFriends] = useState(0)
-  const router = useRouter()
+  const [isJoining, setIsJoining] = useState(false)
+  const isFromExternal = useMemo(
+    () => router.query.external === "true",
+    [router.query.external]
+  )
 
   useEffect(() => {
-    if (profile) {
-      setJoiner({
-        ...joiner,
-        userId: profile.userId,
-        displayName: profile.displayName,
-        pictureUrl: profile.pictureUrl,
-      })
-      if (profile.userId && router.query.id) {
-        loadCurrentData(profile.userId)
-      }
+    if (profile && profile.userId && router.query.id) {
+      loadCurrentData()
     }
   }, [profile])
 
-  const loadCurrentData = async (userId: string) => {
+  const loadCurrentData = async () => {
     const {
       data: { event },
-    } = await axios.get("/api/event/" + router.query.id)
+    } = await axios.get<{ event: FrontEndType.Event }>(
+      "/api/event/" + router.query.id
+    )
     setEventName(event.name)
     if (!event.status) {
       await router.replace(`/event/${router.query.id}`)
     } else {
-      if (event && event.members && event.members.length > 0) {
+      if (profile && event && event.members && event.members.length > 0) {
         const findCurrentUser = event.members.find(
-          (member: any) => member.userId === userId
+          (member: FrontEndType.Member) => member.userId === profile.userId
         )
-
-        if (findCurrentUser) {
-          setIsJoin(findCurrentUser.joinType === "going")
-          if (findCurrentUser.withFriends && findCurrentUser.withFriends > 0) {
-            setWithFriends(findCurrentUser.withFriends)
-          }
+        let joinerNewValue = {
+          ...joiner,
+          userId: profile.userId,
+          displayName: profile.displayName,
+          pictureUrl: profile.pictureUrl,
         }
+        if (findCurrentUser) {
+          joinerNewValue = {
+            ...joinerNewValue,
+            joinType: findCurrentUser.joinType,
+            withFriends: findCurrentUser.withFriends || 0,
+          }
+          setIsJoining(findCurrentUser.joinType === "going")
+        }
+        setJoiner(joinerNewValue)
       }
       setIsLoading(false)
     }
@@ -77,7 +80,7 @@ export default function JoinEvent({ profile }: JoinEventProps) {
         userId: joiner.userId,
         displayName: joiner.displayName,
         pictureUrl: joiner.pictureUrl,
-        withFriends: withFriends,
+        withFriends: joiner.withFriends,
         joinType: "going",
       },
     })
@@ -99,11 +102,14 @@ export default function JoinEvent({ profile }: JoinEventProps) {
   }
 
   const handleIncrease = () => {
-    setWithFriends(withFriends + 1)
+    setJoiner({ ...joiner, withFriends: joiner.withFriends + 1 })
   }
   const handleDecrease = () => {
-    const newWithFriends = withFriends - 1
-    setWithFriends(newWithFriends < 0 ? 0 : newWithFriends)
+    const newWithFriends = joiner.withFriends - 1
+    setJoiner({
+      ...joiner,
+      withFriends: newWithFriends < 0 ? 0 : newWithFriends,
+    })
   }
 
   if (isLoading) {
@@ -174,7 +180,7 @@ export default function JoinEvent({ profile }: JoinEventProps) {
             </span>
           </Typography>
         </div>
-        {router.query.external === "true" ? (
+        {isFromExternal ? (
           <div
             style={{
               padding: "8px 0 16px 0",
@@ -221,7 +227,7 @@ export default function JoinEvent({ profile }: JoinEventProps) {
                   fontWeight: "bold",
                   lineHeight: 1,
                 }}
-                disabled={withFriends === 0}
+                disabled={joiner.withFriends === 0}
                 onClick={handleDecrease}
               >
                 -
@@ -236,7 +242,7 @@ export default function JoinEvent({ profile }: JoinEventProps) {
                 padding="16px 32px"
                 color="#3371FF"
               >
-                {withFriends}
+                {joiner.withFriends}
               </Typography>
               <Button
                 variant="outlined"
@@ -246,7 +252,7 @@ export default function JoinEvent({ profile }: JoinEventProps) {
                   fontWeight: "bold",
                 }}
                 onClick={handleIncrease}
-                disabled={withFriends === 10}
+                disabled={joiner.withFriends === 10}
               >
                 +
               </Button>
@@ -262,13 +268,12 @@ export default function JoinEvent({ profile }: JoinEventProps) {
           size="large"
           variant="contained"
           onClick={handleSubmit}
+          hidden={isJoining && isFromExternal}
         >
-          {isJoin && router.query.external !== "true"
-            ? "Update Join"
-            : "Join Now"}
+          {isJoining ? "Update Join" : "Join Now"}
         </Button>
 
-        {isJoin && (
+        {isJoining && (
           <Button
             style={{
               marginTop: "20px",
