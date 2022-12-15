@@ -14,6 +14,10 @@ export const formatTime = (input: any) => {
 }
 
 export namespace FlexMessageBuilders {
+  /**
+   * USED BY:
+   * - setup
+   */
   export function buildSetupHeader(): FlexBox {
     return {
       type: "box",
@@ -50,6 +54,10 @@ export namespace FlexMessageBuilders {
       ],
     }
   }
+  /**
+   * USED BY:
+   * - setup
+   */
   export function buildSetupBody(
     text: string,
     button: {
@@ -89,6 +97,10 @@ export namespace FlexMessageBuilders {
       ],
     }
   }
+  /**
+   * USED BY:
+   * - summary
+   */
   export function buildSetupBodyWithJoiners(
     text: string,
     button: {
@@ -133,7 +145,13 @@ export namespace FlexMessageBuilders {
       ],
     }
   }
-
+  /**
+   * USED BY:
+   * - announce
+   * - join
+   * - leave
+   * - list
+   */
   export function buildListHeader(
     name: string,
     host: Host,
@@ -179,6 +197,11 @@ export namespace FlexMessageBuilders {
       ],
     }
   }
+  /**
+   * USED BY:
+   * - announce
+   * - list
+   */
   export function buildListBody(
     location: Location,
     date: Date,
@@ -283,11 +306,13 @@ export namespace FlexMessageBuilders {
         },
         buildJoinerCount(members),
         buildJoiners(members),
-        buildDeserterCount(members),
-        buildDeserters(members),
       ],
     }
   }
+  /**
+   * USED BY:
+   * - destroy
+   */
   export function buildListBodyWithoutButton(
     location: Location,
     date: Date,
@@ -375,7 +400,11 @@ export namespace FlexMessageBuilders {
       ],
     }
   }
-
+  /**
+   * USED BY:
+   * - destroy
+   * - summary
+   */
   export function buildSummaryHeader(
     title: string,
     event: Events,
@@ -424,6 +453,7 @@ export namespace FlexMessageBuilders {
     }
   }
 
+  // Components
   export function buildJoinerCount(
     members: Members[] = [],
     isSummary: boolean = false
@@ -440,7 +470,8 @@ export namespace FlexMessageBuilders {
         isSummary ? "people has joined" : "people are joining"
       }`,
       size: "sm",
-      color: "#aaaaaa",
+      weight: "bold",
+      color: "#3371FF",
     }
   }
   export function buildJoiners(members: Members[] = []): FlexBox {
@@ -497,7 +528,6 @@ export namespace FlexMessageBuilders {
       ],
     }
   }
-
   export function buildDeserterCount(
     members: Members[] = [],
     isSummary: boolean = false
@@ -515,7 +545,7 @@ export namespace FlexMessageBuilders {
       }`,
       size: "sm",
       weight: "bold",
-      color: "#aaaaaa",
+      color: "#E0a38e",
     }
   }
   export function buildDeserters(members: Members[] = []): FlexBox {

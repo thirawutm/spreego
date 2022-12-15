@@ -159,8 +159,6 @@ export namespace SpreeGOService {
               },
               FlexMessageBuilders.buildJoinerCount(reqBody.members),
               FlexMessageBuilders.buildJoiners(reqBody.members),
-              FlexMessageBuilders.buildDeserterCount(reqBody.members),
-              FlexMessageBuilders.buildDeserters(reqBody.members),
             ],
           },
         },
@@ -214,8 +212,6 @@ export namespace SpreeGOService {
               },
               FlexMessageBuilders.buildJoinerCount(reqBody.members),
               FlexMessageBuilders.buildJoiners(reqBody.members),
-              FlexMessageBuilders.buildDeserterCount(reqBody.members),
-              FlexMessageBuilders.buildDeserters(reqBody.members),
             ],
           },
         },
@@ -278,7 +274,9 @@ export namespace SpreeGOService {
             ),
           },
         }
-        return LineService.pushMessage({ groupId: event.groupId }, [message])
+        try {
+          await LineService.pushMessage({ groupId: event.groupId }, [message])
+        } catch (e) {}
       })
     )
   }
