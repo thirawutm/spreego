@@ -397,6 +397,8 @@ export namespace FlexMessageBuilders {
         },
         buildJoinerCount(members, true),
         buildJoiners(members),
+        buildDeserterCount(members, true),
+        buildDeserters(members),
       ],
     }
   }
