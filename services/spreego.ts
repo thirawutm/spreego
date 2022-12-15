@@ -105,6 +105,30 @@ export namespace SpreeGOService {
     return LineService.pushMessage(reqBody, messages)
   }
 
+  export function reminder(reqBody: Events): Promise<any> {
+    const { name, host } = reqBody
+    const { location, date, startTime, endTime, members, eventId } = reqBody
+    const messages: Message[] = [
+      {
+        type: "flex",
+        altText: "มาเข้าตี้ซะดีๆ SpreePle",
+        contents: {
+          type: "bubble",
+          header: FlexMessageBuilders.buildSummaryHeader("[Reminder]", reqBody),
+          body: FlexMessageBuilders.buildListBody(
+            location,
+            date,
+            startTime,
+            endTime,
+            members,
+            eventId
+          ),
+        },
+      },
+    ]
+    return LineService.pushMessage(reqBody, messages)
+  }
+
   export function join(reqBody: any): Promise<any> {
     const messages: Message[] = [
       {
