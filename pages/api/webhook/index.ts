@@ -22,12 +22,6 @@ async function messageController(reqBody: any): Promise<any> {
         .then((res) => res.data.events)
       return SpreeGOService.list(reqBody, events)
     }
-    case "#test": {
-      const events = await axios
-        .get(`${Configs.HOST}/api/event`)
-        .then((res) => res.data.events)
-      return SpreeGOService.summary(events)
-    }
     default:
       return null
   }

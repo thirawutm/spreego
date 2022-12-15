@@ -13,7 +13,7 @@ const list = async (
   collection: Document
 ) => {
   const events = await collection.find().toArray()
-
+  
   return res.json({ status: true, events })
 }
 
@@ -22,11 +22,22 @@ const create = async (
   res: NextApiResponse,
   collection: Document
 ) => {
-  const {host} = req.body
-  const doc = {...req.body, members: [{...host, joinType: 'going', withFriends: 0 }], status: true, isCompleted: false, latestNotify: new Date(), createdAt: new Date(), updatedAt: new Date() }
+  const { host } = req.body
+  const doc = {
+    ...req.body,
+    members: [{ ...host, joinType: "going", withFriends: 0 }],
+    status: true,
+    isCompleted: false,
+    latestNotify: new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
 
   const created = await collection.insertOne(doc)
-  await SpreeGOService.announce({...doc, eventId: created.insertedId.toString() })
+  await SpreeGOService.announce({
+    ...doc,
+    eventId: created.insertedId.toString(),
+  })
 
   return res.json({ status: true, created })
 }
@@ -40,7 +51,7 @@ const update = async (
 
   const updated = await collection.updateOne(
     { _id: new ObjectId(id) },
-    { $set: {...toUpdate, updatedAt: new Date() } }
+    { $set: { ...toUpdate, updatedAt: new Date() } }
   )
 
   return res.json({ status: true, updated })

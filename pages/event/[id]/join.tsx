@@ -174,79 +174,100 @@ export default function JoinEvent({ profile }: JoinEventProps) {
             </span>
           </Typography>
         </div>
-        <div
-          style={{
-            padding: "8px 0 16px 0",
-            marginBottom: "16px",
-          }}
-        >
-          <Typography
-            variant="body1"
-            color="grey"
-            fontWeight="bold"
-            marginBottom="16px"
-          >
-            How many friend(s) is going with you?
-          </Typography>
+        {router.query.external === "true" ? (
           <div
             style={{
-              display: "flex",
-              flexDirection: "row",
-              width: "fit-content",
-              margin: "0 auto",
+              padding: "8px 0 16px 0",
+              marginBottom: "16px",
             }}
           >
-            <Button
-              variant="outlined"
-              size="small"
-              style={{
-                fontSize: "40px",
-                fontWeight: "bold",
-                lineHeight: 1,
-              }}
-              disabled={withFriends === 0}
-              onClick={handleDecrease}
-            >
-              -
-            </Button>
             <Typography
               variant="body1"
-              style={{
-                fontSize: "32px",
-                fontWeight: "bold",
-                lineHeight: 1,
-              }}
-              padding="16px 32px"
-              color="#3371FF"
+              color="grey"
+              fontWeight="bold"
+              marginBottom="16px"
             >
-              {withFriends}
+              Do you want to join with him/her?
             </Typography>
-            <Button
-              variant="outlined"
-              size="small"
-              style={{
-                fontSize: "32px",
-                fontWeight: "bold",
-              }}
-              onClick={handleIncrease}
-              disabled={withFriends === 10}
-            >
-              +
-            </Button>
           </div>
-        </div>
+        ) : (
+          <div
+            style={{
+              padding: "8px 0 16px 0",
+              marginBottom: "16px",
+            }}
+          >
+            <Typography
+              variant="body1"
+              color="grey"
+              fontWeight="bold"
+              marginBottom="16px"
+            >
+              How many friend(s) is going with you?
+            </Typography>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                width: "fit-content",
+                margin: "0 auto",
+              }}
+            >
+              <Button
+                variant="outlined"
+                size="small"
+                style={{
+                  fontSize: "40px",
+                  fontWeight: "bold",
+                  lineHeight: 1,
+                }}
+                disabled={withFriends === 0}
+                onClick={handleDecrease}
+              >
+                -
+              </Button>
+              <Typography
+                variant="body1"
+                style={{
+                  fontSize: "32px",
+                  fontWeight: "bold",
+                  lineHeight: 1,
+                }}
+                padding="16px 32px"
+                color="#3371FF"
+              >
+                {withFriends}
+              </Typography>
+              <Button
+                variant="outlined"
+                size="small"
+                style={{
+                  fontSize: "32px",
+                  fontWeight: "bold",
+                }}
+                onClick={handleIncrease}
+                disabled={withFriends === 10}
+              >
+                +
+              </Button>
+            </div>
+          </div>
+        )}
 
-        <Button
-          style={{
-            width: "80%",
-            backgroundColor: "#3371FF",
-          }}
-          size="large"
-          variant="contained"
-          onClick={handleSubmit}
-        >
-          {isJoin ? "Update Join" : "Join Now"}
-        </Button>
+        {router.query.external !== "true" && (
+          <Button
+            style={{
+              width: "80%",
+              backgroundColor: "#3371FF",
+            }}
+            size="large"
+            variant="contained"
+            onClick={handleSubmit}
+          >
+            {isJoin ? "Update Join" : "Join Now"}
+          </Button>
+        )}
+
         {isJoin && (
           <Button
             style={{

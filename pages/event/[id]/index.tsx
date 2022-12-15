@@ -12,7 +12,14 @@ import moment from "moment"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import {
+  FlexMessageBuilders,
+  formatDate,
+  formatTime,
+} from "../../../services/helpers/builders"
 import { Profile, RootProps } from "../../_app"
+import { Members } from "../../../interfaces"
+import Configs from "../../../config"
 
 export interface EventDetailsProps extends RootProps {}
 
@@ -82,6 +89,146 @@ export default function EventDetails({ profile }: EventDetailsProps) {
     setIsLoading(false)
   }
 
+  const handleShare = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    setIsLoading(true)
+    if (event) {
+      const liff = (await import("@line/liff")).default
+      await liff.shareTargetPicker([
+        {
+          type: "flex",
+          altText: "มาเข้าตี้ซะดีๆ SpreePle",
+          contents: {
+            type: "bubble",
+            header: {
+              type: "box",
+              layout: "horizontal",
+              backgroundColor: "#3371FF",
+              alignItems: "flex-end",
+              spacing: "sm",
+              contents: [
+                {
+                  type: "box",
+                  layout: "vertical",
+                  flex: 2,
+                  contents: [
+                    {
+                      type: "text",
+                      text: `${event.name}`,
+                      weight: "bold",
+                      size: "xl",
+                      color: "#FFFFFF",
+                    },
+                    {
+                      type: "text",
+                      text: `by ${event.host.displayName}`,
+                      size: "sm",
+                      color: "#EEEEEE",
+                    },
+                  ],
+                },
+                {
+                  type: "image",
+                  url: `${Configs.HOST}/ren-confetti.png`,
+                },
+              ],
+            },
+            body: {
+              type: "box",
+              layout: "vertical",
+              spacing: "md",
+              contents: [
+                {
+                  type: "box",
+                  layout: "horizontal",
+                  spacing: "sm",
+                  contents: [
+                    {
+                      type: "text",
+                      text: "Location",
+                      color: "#aaaaaa",
+                      size: "sm",
+                      flex: 3,
+                    },
+                    {
+                      type: "text",
+                      wrap: true,
+                      color: "#666666",
+                      size: "sm",
+                      flex: 11,
+                      contents: [],
+                      text: `${event.location.text}` as unknown as undefined,
+                    },
+                  ],
+                },
+                {
+                  type: "box",
+                  layout: "baseline",
+                  spacing: "sm",
+                  contents: [
+                    {
+                      type: "text",
+                      text: "Date",
+                      color: "#aaaaaa",
+                      size: "sm",
+                      flex: 3,
+                    },
+                    {
+                      type: "text",
+                      text: `${formatDate(event.date)}`,
+                      wrap: true,
+                      color: "#666666",
+                      size: "sm",
+                      flex: 11,
+                    },
+                  ],
+                },
+                {
+                  type: "box",
+                  layout: "baseline",
+                  spacing: "sm",
+                  contents: [
+                    {
+                      type: "text",
+                      text: "Time",
+                      color: "#aaaaaa",
+                      size: "sm",
+                      flex: 3,
+                    },
+                    {
+                      type: "text",
+                      text: `${formatTime(event.startTime)} - ${formatTime(event.endTime)}`,
+                      wrap: true,
+                      color: "#666666",
+                      size: "sm",
+                      flex: 11,
+                    },
+                  ],
+                },
+                {
+                  type: "button",
+                  style: "primary",
+                  color: "#3371FF",
+                  action: {
+                    type: "uri",
+                    label: "Join",
+                    uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${event._id}/join?external=true`,
+                  },
+                },
+                {
+                  type: "separator",
+                },
+                FlexMessageBuilders.buildJoinerCount(event.members as Members[]),
+                FlexMessageBuilders.buildJoiners(event.members as Members[]),
+              ],
+            }
+          },
+        },
+      ])
+    }
+    setIsLoading(false)
+  }
+
   const handleCancel = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setIsLoading(true)
@@ -144,7 +291,7 @@ export default function EventDetails({ profile }: EventDetailsProps) {
             <Typography
               variant="h2"
               fontWeight="bold"
-              className='prevent-select'
+              className="prevent-select"
               sx={{
                 position: "absolute",
                 color: "#00890954",
@@ -159,7 +306,7 @@ export default function EventDetails({ profile }: EventDetailsProps) {
             <Typography
               variant="h2"
               fontWeight="bold"
-              className='prevent-select'
+              className="prevent-select"
               sx={{
                 position: "absolute",
                 color: "#ff000055",
@@ -239,15 +386,6 @@ export default function EventDetails({ profile }: EventDetailsProps) {
               {moment(event.endTime).add(7, "hours").format("HH:mm")}
             </Typography>
           </Grid>
-          {/* <Grid item xs={12} marginTop="16px">
-            <Button
-              fullWidth
-              size="large"
-              variant="outlined"
-            >
-              Share
-            </Button>
-          </Grid> */}
           <Grid
             item
             xs={12}
@@ -264,6 +402,16 @@ export default function EventDetails({ profile }: EventDetailsProps) {
                 ?.joinType === "going"
                 ? "Edit Join"
                 : "Join Event"}
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              fullWidth
+              size="large"
+              variant="outlined"
+              onClick={handleShare}
+            >
+              Share
             </Button>
           </Grid>
         </Grid>
@@ -347,15 +495,6 @@ export default function EventDetails({ profile }: EventDetailsProps) {
               renderInput={(params) => <TextField fullWidth {...params} />}
             />
           </Grid>
-          {/* <Grid item xs={12} marginTop="16px">
-            <Button
-              fullWidth
-              size="large"
-              variant="outlined"
-            >
-              Share
-            </Button>
-          </Grid> */}
           <Grid item xs={12} marginTop="16px">
             <Button
               fullWidth
@@ -385,6 +524,16 @@ export default function EventDetails({ profile }: EventDetailsProps) {
             </Button>
           </Grid>
           <Grid item xs={12}>
+            <Button
+              fullWidth
+              size="large"
+              variant="outlined"
+              onClick={handleShare}
+            >
+              Share
+            </Button>
+          </Grid>
+          <Grid item xs={12} marginBottom="16px">
             <Button
               fullWidth
               size="small"
