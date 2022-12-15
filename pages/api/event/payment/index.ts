@@ -4,6 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import Constants from "../../../../constants"
 import { Document, ObjectId } from "mongodb"
 import { SpreeGOService } from "../../../../services/spreego"
+import axios, { isAxiosError } from 'axios'
 
 const COLLECTION_NAME = "events"
 
@@ -29,14 +30,24 @@ const create = async (
   const event = await collection.findOne({ _id: new ObjectId(eventId) })
 
   if (!event)
-    res.status(404).json({ status: false, message: "Event is not found" })
+    return res.status(404).json({ status: false, message: "Event is not found" })
 
   if (event.status === false) {
-    res.status(500).json({ status: false, message: "Event is deleted" })
+    return res.status(500).json({ status: false, message: "Event has been canceled" })
   }
 
   if (event.isCompleted !== true) {
-    res.status(500).json({ status: false, message: "Event has not completed yet" })
+    return res.status(500).json({ status: false, message: "Event has not completed yet" })
+  }
+
+  try {
+    await axios.get(`https://promptpay.io/${paymentPromptPay}.png`)
+  } catch (error) {
+    if (isAxiosError(error)) {
+      return res.status(error.response?.status ?? 500).json({
+        status: false, message: error.response?.data.errorMessage ?? "Something went wrong" 
+      })
+    }
   }
   
   const { members} = event
@@ -70,8 +81,7 @@ const create = async (
     { $set: { members: updateMembers, payment, updatedAt: new Date() } }
   )
 
-
-  const result = await SpreeGOService.payment(event)
+  const result = await SpreeGOService.payment({...event, members: updateMembers, payment})
 
   return res.json({ status: true, updated })
 
