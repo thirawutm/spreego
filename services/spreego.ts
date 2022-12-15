@@ -114,7 +114,7 @@ export namespace SpreeGOService {
         altText: "มาเข้าตี้ซะดีๆ SpreePle",
         contents: {
           type: "bubble",
-          header: FlexMessageBuilders.buildSummaryHeader("[Reminder]", reqBody),
+          header: FlexMessageBuilders.buildSummaryHeader("Reminder 🗓", reqBody),
           body: FlexMessageBuilders.buildListBody(
             location,
             date,
