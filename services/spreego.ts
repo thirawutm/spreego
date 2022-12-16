@@ -209,7 +209,9 @@ export namespace SpreeGOService {
                       },
                       {
                         type: "text",
-                        text: `${formatTime(reqBody.startTime)} - ${formatTime(reqBody.endTime)}`,
+                        text: `${formatTime(reqBody.startTime)} - ${formatTime(
+                          reqBody.endTime
+                        )}`,
                         wrap: true,
                         color: "#666666",
                         size: "sm",
@@ -341,7 +343,9 @@ export namespace SpreeGOService {
                       },
                       {
                         type: "text",
-                        text: `${formatTime(reqBody.startTime)} - ${formatTime(reqBody.endTime)}`,
+                        text: `${formatTime(reqBody.startTime)} - ${formatTime(
+                          reqBody.endTime
+                        )}`,
                         wrap: true,
                         color: "#666666",
                         size: "sm",
@@ -471,7 +475,9 @@ export namespace SpreeGOService {
               `don't forget to pay @${event.host.displayName} :)`,
               {
                 label: "Calculate",
-                uri: `${Configs.LINE_LIFF.LIFF_URL}/event/${event._id.toString()}/payment`,
+                uri: `${
+                  Configs.LINE_LIFF.LIFF_URL
+                }/event/${event._id.toString()}/payment`,
               },
               event.members
             ),
@@ -500,7 +506,7 @@ export namespace SpreeGOService {
           body: {
             type: "box",
             layout: "vertical",
-            spacing: "md",
+            spacing: "xs",
             contents: [
               {
                 type: "image",
@@ -514,7 +520,12 @@ export namespace SpreeGOService {
               {
                 type: "separator",
               },
-              ...FlexMessageBuilders.buildDebtor(event.members),
+              {
+                type: "box",
+                layout: "vertical",
+                margin: "md",
+                contents: FlexMessageBuilders.buildDebtor(event.members)
+              },
             ],
           },
         },
