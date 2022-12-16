@@ -44,6 +44,7 @@ const joinEvent = async (
   )
 
   await SpreeGOService.join({
+    ...event,
     ...req.body,
     name: event.name,
     host: event.host,
