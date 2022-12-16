@@ -500,6 +500,7 @@ export namespace FlexMessageBuilders {
             contents: [
               {
                 type: "icon",
+                size:  "xl",
                 url: `${member.pictureUrl}`,
               },
               {
@@ -507,7 +508,7 @@ export namespace FlexMessageBuilders {
                 text: `${member.displayName}${
                   member.withFriends > 0 ? `+${member.withFriends}` : ""
                 }`,
-                size: "xs",
+                size: "sm",
                 margin: "sm",
               },
             ],
@@ -517,6 +518,9 @@ export namespace FlexMessageBuilders {
         },
         { left: [], right: [] }
       )
+
+      const totalJoins = [...joiners.left, ...joiners.right]
+
     return {
       type: "box",
       layout: "horizontal",
@@ -527,15 +531,16 @@ export namespace FlexMessageBuilders {
           layout: "vertical",
           spacing: "xl",
           flex: 2,
-          contents: joiners.left,
-        },
-        {
-          type: "box",
-          layout: "vertical",
-          spacing: "xl",
-          flex: 2,
-          contents: joiners.right,
-        },
+          contents: totalJoins,
+        }
+        ,
+        // {
+        //   type: "box",
+        //   layout: "vertical",
+        //   spacing: "xl",
+        //   flex: 2,
+        //   contents: joiners.right,
+        // },
       ],
     }
   }
