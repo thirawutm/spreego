@@ -38,7 +38,15 @@ const leaveEvent = async (
     { $set: { members } }
   )
 
-  await SpreeGOService.leave({ user: findUser, name: event.name, host: event.host, eventId: event._id.toString(), groupId: event.groupId, members: members })
+  await SpreeGOService.leave({ 
+    ...event,
+    user: findUser, 
+    name: event.name, 
+    host: event.host, 
+    eventId: event._id.toString(), 
+    groupId: event.groupId, 
+    members: members 
+  })
 
   return res.json({ status: true, updated })
 }
