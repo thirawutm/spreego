@@ -267,46 +267,46 @@ export namespace SpreeGOService {
       }
       return bubble
     })
-    const minimizedContents = contents.slice(0, 3)
-    const moreEventBubble: FlexBubble = {
-      type: "bubble",
-      header: {
-        type: "box",
-        layout: "horizontal",
-        backgroundColor: "#aaaaaa",
-        alignItems: "flex-end",
-        spacing: "sm",
-        contents: [
-          {
-            type: "box",
-            layout: "vertical",
-            flex: 2,
-            contents: [
-              {
-                type: "text",
-                text: `Tap Here`,
-                wrap: true,
-                weight: "bold",
-                size: "xl",
-                color: "#FFFFFF",
-              },
-              {
-                type: "text",
-                text: `for more events`,
-                size: "sm",
-                color: "#EEEEEE",
-              },
-            ],
-          },
-          {
-            type: "image",
-            url: `${Configs.HOST}/ren-confetti.png`,
-          },
-        ],
-      },
-    }
+    const minimizedContents = contents
+    // const moreEventBubble: FlexBubble = {
+    //   type: "bubble",
+    //   header: {
+    //     type: "box",
+    //     layout: "horizontal",
+    //     backgroundColor: "#aaaaaa",
+    //     alignItems: "flex-end",
+    //     spacing: "sm",
+    //     contents: [
+    //       {
+    //         type: "box",
+    //         layout: "vertical",
+    //         flex: 2,
+    //         contents: [
+    //           {
+    //             type: "text",
+    //             text: `Tap Here`,
+    //             wrap: true,
+    //             weight: "bold",
+    //             size: "xl",
+    //             color: "#FFFFFF",
+    //           },
+    //           {
+    //             type: "text",
+    //             text: `for more events`,
+    //             size: "sm",
+    //             color: "#EEEEEE",
+    //           },
+    //         ],
+    //       },
+    //       {
+    //         type: "image",
+    //         url: `${Configs.HOST}/ren-confetti.png`,
+    //       },
+    //     ],
+    //   },
+    // }
 
-    if (minimizedContents.length >= 3) minimizedContents.push(moreEventBubble)
+    // if (minimizedContents.length >= 3) minimizedContents.push(moreEventBubble)
 
     const messages: Message[] = [
       {
