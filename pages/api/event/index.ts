@@ -12,9 +12,11 @@ const list = async (
   res: NextApiResponse,
   collection: Document
 ) => {
-  const { groupId } = req.query
+  const { groupId, limit=2 } = req.query
   const query = groupId ? { groupId } : {}
-  const events = await collection.find(query).toArray()
+  const projection = { name: true, host: true }
+
+  const events = await collection.find(query).project(projection).limit(limit).toArray()
   
   return res.json({ status: true, total: events.length, events })
 }
