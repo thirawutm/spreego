@@ -3,12 +3,14 @@ import { DatePicker, TimePicker } from "@mui/x-date-pickers"
 import axios from "axios"
 import Error from "next/error"
 import Image from "next/image"
+import { useRouter } from "next/router"
 import { useState } from "react"
 import { RootProps } from "../_app"
 
 export interface CreateEventProps extends RootProps {}
 
 export default function CreateEvent({ profile }: CreateEventProps) {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [event, setEvent] = useState({
     name: "",
@@ -32,7 +34,7 @@ export default function CreateEvent({ profile }: CreateEventProps) {
         displayName: profile?.displayName,
         pictureUrl: profile?.pictureUrl,
       },
-      groupId: profile?.groupId,
+      groupId: router.query.room ?? "",
       name: event.name,
       location: {
         text: event.location,

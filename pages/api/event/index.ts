@@ -4,6 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import Constants from "../../../constants"
 import { Document, ObjectId } from "mongodb"
 import { SpreeGOService } from "../../../services/spreego"
+import { RoomService } from "../../../services/room"
 
 const COLLECTION_NAME = "events"
 
@@ -12,8 +13,12 @@ const list = async (
   res: NextApiResponse,
   collection: Document
 ) => {
-  const { groupId, limit=3 } = req.query
-  const query = groupId ? { groupId } : {}
+  const { groupId, limit=3, isCompleted } = req.query
+  const query: any = groupId ? { groupId } : {}
+  if(isCompleted==='no') {
+    query.status = false
+  }
+
   const projection = { name: true, host: true }
 
   const events = await collection.find(query).project(projection).sort({_id: -1}).limit(limit).toArray()
@@ -26,9 +31,11 @@ const create = async (
   res: NextApiResponse,
   collection: Document
 ) => {
-  const { host } = req.body
+  const { host, groupId } = req.body
+  const roomGroupId = groupId ? await RoomService.getGroupId(groupId) : ""
   const doc = {
     ...req.body,
+    groupId: roomGroupId,
     members: [{ ...host, joinType: "going", withFriends: 0 }],
     status: true,
     isCompleted: false,

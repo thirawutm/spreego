@@ -3,9 +3,13 @@ import Configs from "../config"
 import { Events } from "../interfaces"
 import { FlexMessageBuilders, formatDate, formatTime } from "./helpers/builders"
 import { LineService } from "./line"
+import { RoomService } from "./room"
 
 export namespace SpreeGOService {
-  export function start(reqBody: any): Promise<any> {
+  export async function start(reqBody: any): Promise<any> {
+    const groupId = reqBody.events[0]?.source?.groupId || undefined
+    const roomToken = groupId ? await RoomService.getRoomToken(groupId) : ""
+
     const messages: Message[] = [
       {
         type: "text",
@@ -17,7 +21,7 @@ export namespace SpreeGOService {
               action: {
                 type: "uri",
                 label: "Create Event",
-                uri: `${Configs.LINE_LIFF.LIFF_URL}/event/create`,
+                uri: `${Configs.LINE_LIFF.LIFF_URL}/event/create/?room=${roomToken}`,
               },
             },
             {
@@ -35,7 +39,10 @@ export namespace SpreeGOService {
     return LineService.replyMessage(reqBody, messages)
   }
 
-  export function setup(reqBody: any): Promise<any> {
+  export async function setup(reqBody: any): Promise<any> {
+    const groupId = reqBody.events[0]?.source?.groupId || undefined
+    const roomToken = groupId ? await RoomService.getRoomToken(groupId) : ""
+
     const messages: Message[] = [
       {
         type: "flex",
@@ -47,7 +54,7 @@ export namespace SpreeGOService {
             "Let me help you find more people!",
             {
               label: "What do you want to do?",
-              uri: `${Configs.LINE_LIFF.LIFF_URL}/event/create`,
+              uri: `${Configs.LINE_LIFF.LIFF_URL}/event/create/?room=${roomToken}`,
             }
           ),
         },

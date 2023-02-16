@@ -21,7 +21,7 @@ async function messageController(reqBody: any): Promise<any> {
       if (!groupId) return null
 
       const events = await axios
-        .get(`${Configs.HOST}/api/event?groupId=${groupId}`)
+        .get(`${Configs.HOST}/api/event?groupId=${groupId}&isCompleted=no`)
         .then((res) => res.data.events)
       if (!events.length) return null
 
