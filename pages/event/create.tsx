@@ -48,7 +48,7 @@ export default function CreateEvent({ profile }: CreateEventProps) {
     setIsLoading(false)
   }
 
-  if (profile && !profile.groupId) {
+  if (profile && !profile.groupId && !router.query.room) {
     return <Error statusCode={400} title="Group ID is required" />
   }
 

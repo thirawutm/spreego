@@ -13,10 +13,13 @@ const list = async (
   res: NextApiResponse,
   collection: Document
 ) => {
-  const { groupId, limit=3, isCompleted } = req.query
+  const { groupId, limit=3, isCompleted, status } = req.query
   const query: any = groupId ? { groupId } : {}
   if(isCompleted==='no') {
-    query.status = false
+    query.isCompleted = false
+  }
+  if(status==='yes') {
+    query.status = true
   }
 
   const projection = { name: true, host: true }
