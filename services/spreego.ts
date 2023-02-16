@@ -21,7 +21,7 @@ export namespace SpreeGOService {
               action: {
                 type: "uri",
                 label: "Create Event",
-                uri: `${Configs.LINE_LIFF.LIFF_URL}/event/create/?room=${roomToken}`,
+                uri: `${Configs.LINE_LIFF.LIFF_URL}/event/create?room=${roomToken}#room`,
               },
             },
             {
@@ -54,7 +54,7 @@ export namespace SpreeGOService {
             "Let me help you find more people!",
             {
               label: "What do you want to do?",
-              uri: `${Configs.LINE_LIFF.LIFF_URL}/event/create/?room=${roomToken}`,
+              uri: `${Configs.LINE_LIFF.LIFF_URL}/event/create?room=${roomToken}#room`,
             }
           ),
         },
